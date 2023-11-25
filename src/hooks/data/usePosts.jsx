@@ -1,21 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const usePosts = () => {
+const usePosts = (currentPage) => {
   const {
-    isPending,
+    isFetching,
     isLoading,
     error,
+    refetch,
     data: posts,
   } = useQuery({
-    queryKey: ["postsData"],
+    queryKey: ["postsData", currentPage],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/posts");
+      const data = await axios.get(
+        `http://localhost:5000/posts?page=${currentPage + 1}`
+      );
       return await data.data;
     },
   });
 
-  return { isPending, isLoading, error, posts };
+  return { isFetching, isLoading, error, posts, refetch };
 };
 
 export default usePosts;

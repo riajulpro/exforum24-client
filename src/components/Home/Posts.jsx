@@ -5,20 +5,29 @@ import { IoIosMore } from "react-icons/io";
 import { LuArrowBigUp, LuArrowBigDown, LuDot } from "react-icons/lu";
 import { BiComment } from "react-icons/bi";
 import { TfiReload } from "react-icons/tfi";
+import useUsers from "../../hooks/data/useUsers";
+import useComments from "../../hooks/data/useComments";
+import { formatDistanceToNow, parseISO } from "date-fns";
 
-const Posts = ({ username, timestamp }) => {
-  const [upVotes, setUpVotes] = useState(100000);
-  const [downVotes, setDownVotes] = useState(0);
-  const [comments, setComments] = useState([]);
+// eslint-disable-next-line react/prop-types
+const Posts = ({ post }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
   const moreDropdownRef = useRef(null);
 
+  const { users = [] } = useUsers();
+  const currentAuthor = users?.filter((user) => user._id === post.author);
+
+  const { comments = [] } = useComments();
+  const currentComment = comments.filter(
+    (comment) => comment.forPost === post._id
+  );
+
   const handleUpVote = () => {
-    setUpVotes(upVotes + 1);
+    // setUpVotes(upVotes + 1);
   };
 
   const handleDownVote = () => {
-    setDownVotes(downVotes + 1);
+    // setDownVotes(downVotes + 1);
   };
 
   const toggleMoreOptions = () => {
@@ -42,6 +51,14 @@ const Posts = ({ username, timestamp }) => {
     };
   }, []);
 
+  const TimeAgo = ({ date }) => {
+    const formattedDate = formatDistanceToNow(parseISO(date), {
+      addSuffix: true,
+    });
+
+    return <span>{formattedDate}</span>;
+  };
+
   return (
     <div className="bg-white shadow rounded-sm p-3 mb-2 relative">
       <div className="flex items-center mb-2">
@@ -53,49 +70,50 @@ const Posts = ({ username, timestamp }) => {
         <div>
           <div className="flex items-center">
             <span className="text-gray-800 font-semibold text-sm">
-              {username}
+              {currentAuthor[0]?.name}
             </span>
-            <span className="text-gray-500 ml-2 text-sm">{timestamp}</span>
+            <span className="text-gray-500 ml-2 text-sm">
+              {<TimeAgo date={post?.createdAt} />}
+            </span>
           </div>
-          <p className="text-xs text-gray-800">Admin</p>
+          <p className="text-xs text-gray-800">
+            {currentAuthor[0]?.isAdmin
+              ? "Admin"
+              : currentAuthor[0]?.isMember
+              ? "Premium Member"
+              : "New User"}
+          </p>
         </div>
       </div>
       <div>
-        <p className="font-semibold text-sm">Title will be here</p>
-        <p className="text-gray-800 text-sm">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias
-          inventore dolore eligendi, quo doloribus voluptates deserunt dolores
-          dicta dolorum architecto qui consequatur saepe. Quaerat culpa
-          doloremque asperiores vel tempora voluptas veniam minus quae nihil
-          earum repudiandae ex error, repellendus est officiis labore itaque
-          temporibus voluptatum aspernatur explicabo. Libero, impedit
-          voluptatibus.
-        </p>
+        <p className="font-semibold text-sm">{post?.title}</p>
+        <p className="text-gray-800 text-sm">{post?.content}</p>
       </div>
       <div className="flex justify-between mt-2">
         {/* Upvote and Downvote */}
         <div className="flex items-center">
-          <div className="bg-action rounded-full flex gap-0 border border-gray-300 text-sm mr-1">
+          <div className="rounded-full flex gap-0 border border-gray-300 text-xs mr-1">
             <button
               onClick={handleUpVote}
-              className="flex items-center p-1 border-r border-gray-300"
+              className="bg-action rounded-l-full hover:bg-gray-200 flex items-center p-1 border-r border-gray-300"
             >
-              <LuArrowBigUp className="w-5 h-5 text-blue-400" />
+              <LuArrowBigUp className="w-4 h-4 text-blue-400" />
               Upvote <LuDot />{" "}
-              <span className="text-gray-800 ml-1">
-                {(upVotes / 1000).toFixed(1)}K
-              </span>
+              <span className="text-gray-800 ml-1">{post.upVotes}</span>
             </button>
-            <button onClick={handleDownVote} className="flex items-center p-1">
-              <LuArrowBigDown className="text-red-500 w-5 h-5" />
+            <button
+              onClick={handleDownVote}
+              className="bg-action rounded-r-full hover:bg-gray-200 flex items-center p-1"
+            >
+              <LuArrowBigDown className="text-red-500 w-4 h-4" />
             </button>
           </div>
-          <button className="flex items-center mr-1 hover:bg-action p-1 rounded-lg duration-150 ease-in">
-            <BiComment className="text-blue-500 w-5 h-5" />
-            <span className="text-gray-800 ml-1">{comments.length}</span>
+          <button className="flex items-center mr-1 hover:bg-action p-1 rounded-lg duration-150 ease-in text-xs">
+            <BiComment className="text-blue-500 w-4 h-4" />
+            <span className="text-gray-800 ml-1">{currentComment.length}</span>
           </button>
           <button className="flex items-center gap-1 hover:bg-action p-1 rounded-lg duration-150 ease-in">
-            <TfiReload className="text-blue-500 w-4 h-4" /> <span>0</span>
+            <TfiReload className="text-blue-500 w-3 h-3" />
           </button>
         </div>
 
@@ -112,8 +130,8 @@ const Posts = ({ username, timestamp }) => {
           {/* More Options Dropdown */}
           {isMoreOptionsOpen && (
             <div className="absolute -right-5 bottom-0 mb-8 bg-white border border-gray-300 rounded p-2">
-              <p className="cursor-pointer hover:text-blue-500">Edit Post</p>
-              <p className="cursor-pointer hover:text-red-500">Delete Post</p>
+              <p className="cursor-pointer hover:text-blue-500">Edit</p>
+              <p className="cursor-pointer hover:text-red-500">Delete</p>
             </div>
           )}
         </div>

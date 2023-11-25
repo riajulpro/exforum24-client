@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const useComments = () => {
+const useAnnouncements = () => {
   const {
     isPending,
     isLoading,
     error,
-    data: comments,
+    data: announcements,
   } = useQuery({
     queryKey: ["commentsData"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/comments");
+      const data = await axios.get("http://localhost:5000/announcements");
       return await data.data.data;
     },
   });
 
-  return { isPending, isLoading, error, comments };
+  return { isPending, isLoading, error, announcements };
 };
 
-export default useComments;
+export default useAnnouncements;

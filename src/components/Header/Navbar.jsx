@@ -8,12 +8,15 @@ import {
 import { RiDashboardLine } from "react-icons/ri";
 import { BiLogOut } from "react-icons/bi";
 import { RiVipCrownLine, RiVipCrownFill, RiHome2Line } from "react-icons/ri";
+import useAnnouncements from "../../hooks/data/useAnnouncements";
 
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const [notificationCount] = useState(5);
+  const { announcements } = useAnnouncements();
+
+  const [notificationCount] = useState(announcements?.length || 0);
   const [membership] = useState(false);
   const [user] = useState(true);
 
@@ -36,7 +39,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-white text-secondary p-1">
+    <nav className="bg-white text-secondary p-1 sticky top-0 z-10 shadow">
       <div className="md:w-9/12 mx-auto flex justify-between items-center">
         <div className="text-xl font-bold">ExForum24</div>
         <ul className="flex space-x-1 items-center uppercase">
