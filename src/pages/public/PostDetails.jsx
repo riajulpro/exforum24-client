@@ -1,15 +1,15 @@
 import { useParams } from "react-router-dom";
 import useGetSinglePost from "../../hooks/data/useGetSinglePost";
-import Posts from "../../components/Home/Posts";
 import useComments from "../../hooks/data/useComments";
 import Comments from "../../components/PostDetails/Comments";
 import CreateComment from "../../components/PostDetails/CreateComment";
+import PostInfo from "../../components/PostDetails/PostInfo";
 
 const PostDetails = () => {
   const { id: pageId } = useParams();
   const { singlePost = [] } = useGetSinglePost(pageId);
 
-  const { comments = [] } = useComments();
+  const { comments = [], refetch } = useComments();
   const currentComment = comments.filter(
     (comment) => comment.forPost === pageId
   );
@@ -22,11 +22,11 @@ const PostDetails = () => {
       <div className="col-span-7">
         <div>
           {singlePost.map((current) => (
-            <Posts key={current._id} post={current} />
+            <PostInfo key={current._id} post={current} />
           ))}
         </div>
         <div>
-            <CreateComment />
+          <CreateComment postId={pageId} refetchHandle={refetch} />
         </div>
         <div>
           {currentComment?.map((comment) => (

@@ -7,6 +7,7 @@ const useComments = () => {
     isLoading,
     error,
     data: comments,
+    refetch,
   } = useQuery({
     queryKey: ["commentsData"],
     queryFn: async () => {
@@ -15,7 +16,7 @@ const useComments = () => {
     },
   });
 
-  return { isPending, isLoading, error, comments };
+  return { isPending, isLoading, error, comments, refetch };
 };
 
 export default useComments;

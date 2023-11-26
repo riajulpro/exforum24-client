@@ -1,13 +1,37 @@
-const CreateComment = () => {
+import axios from "axios";
+
+const CreateComment = ({ postId, refetchHandle }) => {
+  console.log(postId);
+
   const commentNow = (e) => {
     e.preventDefault();
-    console.log("comment is being added");
+
+    const commentText = e.target.commentText.value;
+
+    const commentBody = {
+      forPost: postId,
+      user: "65616b5fe439c3ed317aac78",
+      text: commentText,
+    };
+
+    console.log(commentBody);
+
+    axios
+      .post("http://localhost:5000/comments", commentBody)
+      .then((response) => {
+        console.log(response);
+        e.target.commentText.value = "";
+        refetchHandle();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
-    <div className="bg-white p-3">
+    <div className="mb-2 bg-white p-3">
       <form
-        onClick={commentNow}
+        onSubmit={commentNow}
         className="flex gap-1 items-center justify-between"
       >
         <img

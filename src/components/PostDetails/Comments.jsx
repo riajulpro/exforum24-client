@@ -43,7 +43,7 @@ const Comments = ({ comment }) => {
 
   return (
     <>
-      <div className="my-2 bg-white p-2">
+      <div className="border-b border-gray-200 bg-white p-2">
         <div className="flex gap-1 items-start">
           <img
             src={currentAuthor[0]?.profile_picture}
