@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import useUsers from "../../hooks/data/useUsers";
 import { LuArrowBigUp, LuArrowBigDown, LuDot } from "react-icons/lu";
 import { IoIosMore } from "react-icons/io";
+import axios from "axios";
 
-const Comments = ({ comment }) => {
+const Comments = ({ comment, refetch }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
 
   const { users = [] } = useUsers();
@@ -16,6 +17,18 @@ const Comments = ({ comment }) => {
 
   const handleDownVote = () => {
     // setDownVotes(downVotes + 1);
+  };
+
+  const deleteTheCommentItem = (e, id) => {
+    e.preventDefault();
+
+    axios
+      .delete(`http://localhost:5000/comments/${id}`)
+      .then((res) => {
+        console.log(res);
+        refetch();
+      })
+      .catch((err) => console.log(err));
   };
 
   const toggleMoreOptions = () => {
@@ -84,6 +97,16 @@ const Comments = ({ comment }) => {
                 {/* More Options Dropdown */}
                 {isMoreOptionsOpen && (
                   <div className="absolute -right-5 bottom-0 mb-8 bg-white border border-gray-300 rounded p-2">
+                    <p>
+                      <button className="cursor-pointer hover:text-blue-500">Edit</button>
+                    </p>
+                    <p>
+                      <button className="cursor-pointer hover:text-red-500"
+                        onClick={(e) => deleteTheCommentItem(e, comment._id)}
+                      >
+                        Delete
+                      </button>
+                    </p>
                     <p className="cursor-pointer hover:text-red-500">Report</p>
                   </div>
                 )}

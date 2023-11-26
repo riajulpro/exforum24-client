@@ -17,7 +17,7 @@ const PostSection = () => {
     <>
       <div>
         {showPost.map((post) => (
-          <Posts post={post} key={post._id} />
+          <Posts post={post} refetch={refetch} key={post._id} />
         ))}
       </div>
       <div className="flex justify-center my-5">

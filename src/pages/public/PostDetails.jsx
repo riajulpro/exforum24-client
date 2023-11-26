@@ -30,7 +30,7 @@ const PostDetails = () => {
         </div>
         <div>
           {currentComment?.map((comment) => (
-            <Comments key={comment._id} comment={comment} />
+            <Comments key={comment._id} refetch={refetch} comment={comment} />
           ))}
         </div>
       </div>

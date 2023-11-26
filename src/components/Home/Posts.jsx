@@ -7,8 +7,9 @@ import useUsers from "../../hooks/data/useUsers";
 import useComments from "../../hooks/data/useComments";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-const Posts = ({ post }) => {
+const Posts = ({ post, refetch }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
   const moreDropdownRef = useRef(null);
 
@@ -26,6 +27,18 @@ const Posts = ({ post }) => {
 
   const handleDownVote = () => {
     // setDownVotes(downVotes + 1);
+  };
+
+  const deleteThePostItem = (e, id) => {
+    e.preventDefault();
+
+    axios
+      .delete(`http://localhost:5000/posts/${id}`)
+      .then((res) => {
+        console.log(res);
+        refetch();
+      })
+      .catch((err) => console.log(err));
   };
 
   const toggleMoreOptions = () => {
@@ -86,7 +99,7 @@ const Posts = ({ post }) => {
       <div>
         <p className="font-semibold text-sm">{title}</p>
         <p className="text-gray-800 text-sm">
-          {content.length} {content.slice(0, 300)}{" "}
+          {content.slice(0, 300)}{" "}
           {content.length > 300 ? (
             <Link
               to={`/posts/${_id}`}
@@ -152,9 +165,21 @@ const Posts = ({ post }) => {
 
           {/* More Options Dropdown */}
           {isMoreOptionsOpen && (
-            <div className="absolute -right-5 bottom-0 mb-8 bg-white border border-gray-300 rounded p-2">
-              <p className="cursor-pointer hover:text-blue-500">Edit</p>
-              <p className="cursor-pointer hover:text-red-500">Delete</p>
+            <div className="absolute z-30 -right-5 bottom-0 mb-8 bg-white border border-gray-300 rounded p-2">
+              <Link
+                to={`/edit/${_id}`}
+                className="cursor-pointer hover:text-blue-500"
+              >
+                Edit
+              </Link>
+              <p>
+                <button
+                  onClick={(e) => deleteThePostItem(e, _id)}
+                  className="cursor-pointer hover:text-red-500"
+                >
+                  Delete
+                </button>
+              </p>
             </div>
           )}
         </div>
