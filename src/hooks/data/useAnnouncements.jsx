@@ -8,7 +8,7 @@ const useAnnouncements = () => {
     error,
     data: announcements,
   } = useQuery({
-    queryKey: ["commentsData"],
+    queryKey: ["announcementData"],
     queryFn: async () => {
       const data = await axios.get("http://localhost:5000/announcements");
       return await data.data.data;

@@ -8,7 +8,7 @@ import useComments from "../../hooks/data/useComments";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Link } from "react-router-dom";
 
-const Posts = ({ post }) => {
+const PostInfo = ({ post }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
   const moreDropdownRef = useRef(null);
 
@@ -85,19 +85,7 @@ const Posts = ({ post }) => {
       </div>
       <div>
         <p className="font-semibold text-sm">{title}</p>
-        <p className="text-gray-800 text-sm">
-          {content.length} {content.slice(0, 300)}{" "}
-          {content.length > 300 ? (
-            <Link
-              to={`/posts/${_id}`}
-              className="text-blue-400 hover:text-blue-500"
-            >
-              ...more
-            </Link>
-          ) : (
-            ""
-          )}
-        </p>
+        <p className="text-gray-800 text-sm">{content}</p>
         <p className="mt-1">
           {tags?.map((tag, index) => (
             <span
@@ -163,4 +151,4 @@ const Posts = ({ post }) => {
   );
 };
 
-export default Posts;
+export default PostInfo;

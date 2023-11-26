@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef, useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
 import {
   IoMdNotificationsOutline,
   IoMdNotifications,
@@ -9,16 +9,22 @@ import { RiDashboardLine } from "react-icons/ri";
 import { BiLogOut } from "react-icons/bi";
 import { RiVipCrownLine, RiVipCrownFill, RiHome2Line } from "react-icons/ri";
 import useAnnouncements from "../../hooks/data/useAnnouncements";
+import { AuthContext } from "../../context/Authentication";
 
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const { announcements } = useAnnouncements();
+  const { announcements = [] } = useAnnouncements();
 
-  const [notificationCount] = useState(announcements?.length || 0);
+  const [notificationCount, setNotificationCount] = useState(0);
+  useEffect(() => {
+    setNotificationCount(announcements.length);
+  }, [announcements]);
+
   const [membership] = useState(false);
-  const [user] = useState(true);
+
+  const { user } = useContext(AuthContext);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -44,16 +50,16 @@ const Navbar = () => {
         <div className="text-xl font-bold">ExForum24</div>
         <ul className="flex space-x-1 items-center uppercase">
           <li>
-            <a
-              href="#"
+            <NavLink
+              to="/"
               className="flex items-center gap-1 hover:bg-action p-2 rounded duration-150 ease-in"
             >
               <RiHome2Line className="w-6 h-6" /> Home
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a
-              href="#"
+            <NavLink
+              to="/membership"
               className="flex items-center gap-1 hover:bg-action p-2 rounded duration-150 ease-in"
             >
               {membership ? (
@@ -62,7 +68,7 @@ const Navbar = () => {
                 <RiVipCrownLine className="w-6 h-6" />
               )}{" "}
               Membership
-            </a>
+            </NavLink>
           </li>
           <li className="hover:bg-action p-2 rounded duration-150 ease-in relative">
             {notificationCount > 0 ? (
