@@ -13,7 +13,6 @@ import useAxiosPublic from "../hooks/axios/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 
-// eslint-disable-next-line react/prop-types
 const Authentication = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

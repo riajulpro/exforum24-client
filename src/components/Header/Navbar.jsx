@@ -10,21 +10,31 @@ import { BiLogOut } from "react-icons/bi";
 import { RiVipCrownLine, RiVipCrownFill, RiHome2Line } from "react-icons/ri";
 import useAnnouncements from "../../hooks/data/useAnnouncements";
 import { AuthContext } from "../../context/Authentication";
+import Announcement from "../Home/Announcement";
 
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isNotificationOpen, setNotificationOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const notificationRef = useRef(null);
 
   const { announcements = [] } = useAnnouncements();
+  const [membership] = useState(false);
+  const { user, logOut } = useContext(AuthContext);
+
+  const signOut = () => {
+    logOut()
+      .then(() => console.log("successfully singing out"))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const [notificationCount, setNotificationCount] = useState(0);
+
   useEffect(() => {
     setNotificationCount(announcements.length);
   }, [announcements]);
-
-  const [membership] = useState(false);
-
-  const { user } = useContext(AuthContext);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -44,10 +54,33 @@ const Navbar = () => {
     };
   }, []);
 
+  const toggleNotification = () => {
+    setNotificationOpen(!isDropdownOpen);
+  };
+
+  const handleClickOutsideNotification = (event) => {
+    if (
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target)
+    ) {
+      setNotificationOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutsideNotification);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutsideNotification);
+    };
+  }, []);
+
   return (
     <nav className="bg-white text-secondary p-1 sticky top-0 z-10 shadow">
       <div className="md:w-9/12 mx-auto flex justify-between items-center">
-        <div className="text-xl font-bold">ExForum24</div>
+        <div className="text-xl font-bold">
+          <Link to={"/"}>ExForum24</Link>
+        </div>
         <ul className="flex space-x-1 items-center uppercase">
           <li>
             <NavLink
@@ -70,15 +103,25 @@ const Navbar = () => {
               Membership
             </NavLink>
           </li>
-          <li className="hover:bg-action p-2 rounded duration-150 ease-in relative">
-            {notificationCount > 0 ? (
-              <IoMdNotifications className="w-6 h-6" />
-            ) : (
-              <IoMdNotificationsOutline className="w-6 h-6" />
-            )}
-            {notificationCount > 0 && (
-              <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full text-[10px] select-none">
-                {notificationCount}
+          <li className="relative" ref={notificationRef}>
+            <button
+              onClick={toggleNotification}
+              className="hover:bg-action p-2 rounded duration-150 ease-in"
+            >
+              {notificationCount > 0 ? (
+                <IoMdNotifications className="w-6 h-6" />
+              ) : (
+                <IoMdNotificationsOutline className="w-6 h-6" />
+              )}
+              {notificationCount > 0 && (
+                <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full text-[10px] select-none">
+                  {notificationCount}
+                </div>
+              )}
+            </button>
+            {isNotificationOpen && (
+              <div className="z-20 absolute right-0 mt-2 bg-white rounded-sm shadow-md w-64 border border-gray-100 text-xs">
+                <Announcement />
               </div>
             )}
           </li>
@@ -90,34 +133,37 @@ const Navbar = () => {
                 className="text-white hover:text-gray-300 hover:bg-action p-2 rounded duration-150 ease-in"
               >
                 <img
-                  src="https://th.bing.com/th/id/OIP.2r5wqEPi_CvcNGmUprinPwHaIB?rs=1&pid=ImgDetMain" // Replace with your profile picture source
+                  src={user?.photoURL}
                   alt="Profile"
-                  className="w-6 h-6 rounded-full"
+                  className="w-6 h-6 rounded-full border"
                 />
               </button>
               {isDropdownOpen && (
                 <div className="z-20 absolute right-0 mt-2 bg-white rounded-sm shadow-md w-64 border border-gray-100">
                   <div className="border-b border-gray-200 p-3">
                     <img
-                      src="https://th.bing.com/th/id/OIP.2r5wqEPi_CvcNGmUprinPwHaIB?rs=1&pid=ImgDetMain" // Replace with your profile picture source
+                      src={user?.photoURL}
                       alt="Profile"
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full border"
                     />
                     <div className="flex items-center gap-1 justify-between">
                       <p className="text-gray-800 font-semibold mt-1">
-                        RiaJul Pro
+                        {user?.displayName}
                       </p>
                       <IoIosArrowForward />
                     </div>
                   </div>
                   <div>
                     <Link
-                      to=""
+                      to="/user-dashboard"
                       className="flex items-center gap-1 text-gray-700 hover:text-blue-500 hover:bg-gray-50 px-3 py-1"
                     >
                       <RiDashboardLine /> Dashboard
                     </Link>
-                    <button className="flex items-center gap-1 px-3 py-1 text-gray-700 hover:text-red-500 hover:bg-gray-50 w-full text-left">
+                    <button
+                      onClick={signOut}
+                      className="flex items-center gap-1 px-3 py-1 text-gray-700 hover:text-red-500 hover:bg-gray-50 w-full text-left"
+                    >
                       <BiLogOut /> Logout
                     </button>
                   </div>
@@ -126,9 +172,12 @@ const Navbar = () => {
             </li>
           ) : (
             <li>
-              <button className="bg-secondary text-white rounded-full px-3 py-1 uppercase text-sm hover:opacity-90">
+              <Link
+                to={"/join"}
+                className="bg-secondary text-white rounded-full px-3 py-1 uppercase text-sm hover:opacity-90"
+              >
                 Join Us
-              </button>
+              </Link>
             </li>
           )}
         </ul>

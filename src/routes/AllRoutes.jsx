@@ -16,6 +16,7 @@ import MyPost from "../pages/private/user/MyPost";
 import ErrorPage from "../layout/main/ErrorPage";
 import Login from "../pages/public/Login";
 import Membership from "../pages/private/Membership";
+import AnnouncementDetails from "../pages/public/AnnouncementDetails";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/membership",
         element: <Membership />,
+      },
+      {
+        path: "/announcement-details/:id",
+        element: <AnnouncementDetails />,
       },
     ],
   },
