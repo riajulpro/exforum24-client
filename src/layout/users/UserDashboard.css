@@ -1,0 +1,11 @@
+a {
+  padding: 4px 12px;
+  border-bottom: 1px solid #eee;
+}
+a.active {
+  background: #f7f7f7;
+  font-weight: 600;
+}
+a:hover {
+  color: blueviolet;
+}
