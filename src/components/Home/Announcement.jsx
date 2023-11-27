@@ -7,7 +7,9 @@ const Announcement = () => {
   return (
     <div className="sticky top-[70px]">
       <div className="bg-white">
-        <p className="font-semibold border-b p-3">Announcements</p>
+        {announcements.length > 0 && (
+          <p className="font-semibold border-b p-3">Announcements</p>
+        )}
         {announcements.map((ann) => (
           <Link key={ann._id} to={`/announcement-details/${ann._id}`}>
             <div className="p-3 hover:bg-action cursor-pointer">

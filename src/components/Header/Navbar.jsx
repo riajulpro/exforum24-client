@@ -133,18 +133,24 @@ const Navbar = () => {
                 className="text-white hover:text-gray-300 hover:bg-action p-2 rounded duration-150 ease-in"
               >
                 <img
-                  src={user?.photoURL}
+                  src={
+                    user?.photoURL ||
+                    "https://th.bing.com/th/id/R.a6e328f484dfaee5cff22431f5c61cab?rik=QtxCe0VZ6bQvjQ&pid=ImgRaw&r=0"
+                  }
                   alt="Profile"
-                  className="w-6 h-6 rounded-full border"
+                  className="w-6 h-6 rounded-full border object-cover"
                 />
               </button>
               {isDropdownOpen && (
                 <div className="z-20 absolute right-0 mt-2 bg-white rounded-sm shadow-md w-64 border border-gray-100">
                   <div className="border-b border-gray-200 p-3">
                     <img
-                      src={user?.photoURL}
+                      src={
+                        user?.photoURL ||
+                        "https://th.bing.com/th/id/R.a6e328f484dfaee5cff22431f5c61cab?rik=QtxCe0VZ6bQvjQ&pid=ImgRaw&r=0"
+                      }
                       alt="Profile"
-                      className="w-8 h-8 rounded-full border"
+                      className="w-8 h-8 rounded-full border object-cover"
                     />
                     <div className="flex items-center gap-1 justify-between">
                       <p className="text-gray-800 font-semibold mt-1">

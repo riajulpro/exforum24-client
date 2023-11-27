@@ -4,9 +4,13 @@ import { updateProfile } from "firebase/auth";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authentication";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
+import axios, { Axios } from "axios";
 
 const Join = () => {
   const navigateTo = useNavigate();
+
+  const { user } = useContext(AuthContext);
 
   const [password, setPassword] = useState(null);
 
@@ -15,45 +19,69 @@ const Join = () => {
     setPassword(passwordValue);
   };
 
-  const { createUser, signIn, googleSignIn } = useContext(AuthContext);
+  const { createUser, googleSignIn } = useContext(AuthContext);
 
   const googleLogin = () => {
     googleSignIn()
       .then((res) => {
-        // navigateTo("/");
+        const { displayName, email, photoURL } = res.user;
 
-        console.log(res);
+        const userBody = {
+          name: displayName,
+          email,
+          profile_picture: photoURL,
+          badges: ["Bronze Badge"],
+        };
+
+        axios
+          .post("http://localhost:5000/users", userBody)
+          .then(() => {
+            Swal.fire(
+              "You have successfully register!",
+              "Please login now!",
+              "success"
+            );
+            navigateTo("/login");
+          })
+          .catch((err) => console.log(err));
       })
       .catch((error) => {
         console.log(error.message);
       });
   };
 
-  const signUpFormSubmit = (e) => {
-    e.preventDefault();
+  const { register, handleSubmit } = useForm();
 
-    const form = new FormData(e.currentTarget);
+  const signUpFormSubmit = (data) => {
+    const { username, picture, email } = data;
 
-    const username = form.get("username");
-    const picture = form.get("picture");
-    const email = form.get("email");
+    const userBody = {
+      name: username,
+      profile_picture: picture,
+      email,
+      password,
+      badges: ["Bronze Badge"],
+    };
 
     if (/^(?=.*[A-Z])(?=.*[\W_]).{6,}$/.test(password)) {
-      createAccount(email, password)
+      createUser(email, password)
         .then((result) => {
           updateProfile(result.user, {
             displayName: username,
             photoURL: picture,
           })
-            .then((res) => {
-              Swal.fire(
-                "You have successfully register!",
-                "Please login now!",
-                "success"
-              );
-              navigateTo("/login");
-
-              console.log(res);
+            .then(() => {
+              axios
+                .post("http://localhost:5000/users", userBody)
+                .then(() => {
+                  Swal.fire(
+                    "You have successfully register!",
+                    "Please login now!",
+                    "success"
+                  );
+                  navigateTo("/login");
+                })
+                .catch((err) => console.log(err));
             })
             .catch((error) => {
               console.log(error.message);
@@ -104,25 +132,28 @@ const Join = () => {
                 </button>
               </Link>
             </div>
-            <form onSubmit={signUpFormSubmit} className="flex flex-col gap-1">
+            <form
+              onSubmit={handleSubmit(signUpFormSubmit)}
+              className="flex flex-col gap-1"
+            >
               <h5 className="font-bold">Full Name</h5>
               <input
                 type="text"
-                name="username"
+                {...register("username")}
                 className="w-full p-2 outline-none border-b"
                 placeholder="Enter your full-name"
               />
               <h5 className="font-bold">Profile Picture (link)</h5>
               <input
                 type="text"
-                name="picture"
+                {...register("picture")}
                 className="w-full p-2 outline-none border-b"
                 placeholder="Enter link of the picture"
               />
               <h5 className="font-bold">Email</h5>
               <input
                 type="email"
-                name="email"
+                {...register("email")}
                 className="w-full p-2 outline-none border-b"
                 placeholder="Enter your email"
               />
@@ -150,7 +181,7 @@ const Join = () => {
               <input
                 type="submit"
                 value="Register"
-                className="w-full rounded-md p-2 bg-violet-600 hover:bg-violet-400 text-white font-semibold"
+                className="w-full rounded-md p-2 bg-blue-600 hover:bg-blue-400 text-white font-semibold"
               />
             </form>
           </div>

@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiFillGithub, AiFillGoogleCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/Authentication";
+import { useForm } from "react-hook-form";
+// import axios from "axios";
 
 const Login = () => {
   const navigateTo = useNavigate();
@@ -13,28 +15,37 @@ const Login = () => {
 
   const googleLogin = () => {
     googleSignIn()
-      .then(() => {
-        Swal.fire(
-          "You have successfully login!",
-          "Now you can access all features.",
-          "success"
-        );
-        navigateTo(location?.state ? location.state : "/");
+      .then((res) => {
+        const { displayName, email, photoURL } = res.user;
+
+        const userBody = {
+          name: displayName,
+          email,
+          profile_picture: photoURL,
+          badges: ["Bronze Badge"],
+        };
+
+        axios
+          .post("http://localhost:5000/users", userBody)
+          .then(() => {
+            Swal.fire(
+              "You have successfully register!",
+              "Please login now!",
+              "success"
+            );
+            navigateTo("/login");
+          })
+          .catch((err) => console.log(err));
       })
       .catch((error) => {
         console.log(error.message);
       });
   };
 
-  const loginFormSubmit = (e) => {
-    e.preventDefault();
+  const { register, handleSubmit } = useForm();
 
-    const form = new FormData(e.currentTarget);
-
-    const email = form.get("email");
-    const password = form.get("password");
-
-    signAccount(email, password)
+  const login = (data) => {
+    signIn(data.email, data.password)
       .then(() => {
         Swal.fire(
           "You have successfully login!",
@@ -63,8 +74,12 @@ const Login = () => {
             <div className="mt-4 md:mt-0">
               <h3 className="text-center text-slate-100">Or Sign Up Using</h3>
               <div className="flex gap-1 justify-center items-center mt-2">
-                <button onClick={googleLogin}>
-                  <AiFillGoogleCircle className="w-9 h-9 hover:text-white" />
+                <button
+                  onClick={googleLogin}
+                  className="hover:text-white flex gap-2 items-center bg-white hover:bg-secondary p-2 rounded-md"
+                >
+                  <AiFillGoogleCircle className="w-9 h-9" /> Continue with
+                  Google
                 </button>
               </div>
             </div>
@@ -83,7 +98,10 @@ const Login = () => {
               </Link>
               <Link to={"/join"}>Join</Link>
             </div>
-            <form onSubmit={loginFormSubmit} className="flex flex-col gap-3">
+            <form
+              onSubmit={handleSubmit(login)}
+              className="flex flex-col gap-3"
+            >
               {loginError ? (
                 <div className="bg-yellow-100 text-center border border-red-400">
                   <h5 className="font-bold text-sm">Wrong Credential</h5>
@@ -95,14 +113,14 @@ const Login = () => {
               <h5 className="font-bold">Email</h5>
               <input
                 type="email"
-                name="email"
+                {...register("email")}
                 className="w-full p-2 outline-none border-b"
                 placeholder="Enter your email"
               />
               <h5 className="font-bold">Password</h5>
               <input
                 type="password"
-                name="password"
+                {...register("password")}
                 className="w-full p-2 outline-none border-b"
                 placeholder="Enter your password"
               />

@@ -20,7 +20,7 @@ const UserDashboard = () => {
               </h6>
             </Link>
           </div>
-          <div className="flex flex-col">
+          <div className="nav-links flex flex-col">
             <Link
               to={"/user-dashboard"}
               className={`${isActiveLink("/user-dashboard") && "active"}`}
