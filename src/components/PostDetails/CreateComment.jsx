@@ -1,7 +1,27 @@
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../context/Authentication";
+import useSingleUser from "../../hooks/data/useSingleUser";
 
 const CreateComment = ({ postId, refetchHandle }) => {
-  console.log(postId);
+  // -------------------------------------------------------------
+  const { user } = useContext(AuthContext);
+
+  let userEmail = "";
+
+  if (user) {
+    let userEmail = user.email;
+  }
+
+  const { currentUser = [], isLoading } = useSingleUser(userEmail);
+
+  if (isLoading) {
+    return "Loading...";
+  }
+
+  const { _id } = currentUser[0];
+
+  // -------------------------------------------------------------
 
   const commentNow = (e) => {
     e.preventDefault();
@@ -10,16 +30,13 @@ const CreateComment = ({ postId, refetchHandle }) => {
 
     const commentBody = {
       forPost: postId,
-      user: "65616b5fe439c3ed317aac78",
+      user: _id,
       text: commentText,
     };
-
-    console.log(commentBody);
 
     axios
       .post("http://localhost:5000/comments", commentBody)
       .then((response) => {
-        console.log(response);
         e.target.commentText.value = "";
         refetchHandle();
       })
@@ -35,7 +52,7 @@ const CreateComment = ({ postId, refetchHandle }) => {
         className="flex gap-1 items-center justify-between"
       >
         <img
-          src="https://th.bing.com/th/id/OIP.2r5wqEPi_CvcNGmUprinPwHaIB?rs=1&pid=ImgDetMain"
+          src={user?.photoURL}
           alt=""
           className="w-6 h-6 rounded-full object-cover"
         />
@@ -44,7 +61,7 @@ const CreateComment = ({ postId, refetchHandle }) => {
           placeholder="enter your opinion"
           name="commentText"
           id=""
-          className="border border-gray-300 py-1 px-2 w-3/4 rounded-full"
+          className="border border-gray-300 py-1 px-2 w-3/4 rounded-full text-sm"
         />
         <input
           type="submit"
