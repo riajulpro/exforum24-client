@@ -31,9 +31,7 @@ const useSingleUser = () => {
     },
   });
 
-  const currentUser = userInfo ? userInfo[0] : null;
-
-  return { isLoading, error, currentUser };
+  return { isLoading, error, userInfo };
 };
 
 export default useSingleUser;

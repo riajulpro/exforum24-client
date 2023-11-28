@@ -1,13 +1,21 @@
-import { useLoaderData, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useComments from "../../hooks/data/useComments";
 import Comments from "../../components/PostDetails/Comments";
 import CreateComment from "../../components/PostDetails/CreateComment";
 import PostInfo from "../../components/PostDetails/PostInfo";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const PostDetails = () => {
   const { id: pageId } = useParams();
 
-  const { data: singlePost } = useLoaderData();
+  const { data: singlePost = [], refetch: postRefetch } = useQuery({
+    queryKey: ["SingleDetailsPost", pageId],
+    queryFn: async () => {
+      const res = await axios.get(`http://localhost:5000/posts/${pageId}`);
+      return res.data.data;
+    },
+  });
 
   const { comments = [], refetch } = useComments();
   const currentComment = comments.filter(
@@ -20,7 +28,7 @@ const PostDetails = () => {
       <div className="col-span-7">
         <div>
           {singlePost.map((current) => (
-            <PostInfo key={current._id} post={current} />
+            <PostInfo key={current._id} post={current} refetch={postRefetch} />
           ))}
         </div>
         <div>

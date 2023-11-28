@@ -7,12 +7,14 @@ import useUsers from "../../hooks/data/useUsers";
 import useComments from "../../hooks/data/useComments";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-const PostInfo = ({ post }) => {
+const PostInfo = ({ post, refetch }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
   const moreDropdownRef = useRef(null);
 
-  const { _id, author, title, content, tags, upVotes, createdAt } = post;
+  const { _id, author, title, content, tags, upVotes, downVotes, createdAt } =
+    post;
 
   const { users = [] } = useUsers();
   const currentAuthor = users?.filter((user) => user._id === author);
@@ -21,11 +23,35 @@ const PostInfo = ({ post }) => {
   const currentComment = comments.filter((comment) => comment.forPost === _id);
 
   const handleUpVote = () => {
-    // setUpVotes(upVotes + 1);
+    const vote = upVotes + 1;
+    const voteBody = {
+      upVotes: vote,
+    };
+    axios
+      .put(`http://localhost:5000/posts/${_id}`, voteBody)
+      .then(() => {
+        console.log("Your vote has been added to upVotes");
+        refetch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDownVote = () => {
-    // setDownVotes(downVotes + 1);
+    const vote = downVotes + 1;
+    const voteBody = {
+      downVotes: vote,
+    };
+    axios
+      .put(`http://localhost:5000/posts/${_id}`, voteBody)
+      .then(() => {
+        console.log("Your vote has been added to downVotes");
+        refetch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const toggleMoreOptions = () => {
@@ -55,6 +81,26 @@ const PostInfo = ({ post }) => {
     });
 
     return <span>{formattedDate}</span>;
+  };
+
+  // share function
+  const handleShare = async () => {
+    try {
+      // Check if the share API is supported by the browser
+      if (navigator.share) {
+        await navigator.share({
+          title: title,
+          text: content,
+          url: window.location.href,
+        });
+      } else {
+        // Fallback for browsers that do not support the share API
+        console.log("Web Share API not supported.");
+        // You can provide a fallback share implementation here, like opening a new window with shareable link
+      }
+    } catch (error) {
+      console.error("Error sharing the post:", error);
+    }
   };
 
   return (
@@ -123,7 +169,10 @@ const PostInfo = ({ post }) => {
             <BiComment className="text-blue-500 w-4 h-4" />
             <span className="text-gray-800 ml-1">{currentComment.length}</span>
           </Link>
-          <button className="flex items-center gap-1 hover:bg-action p-1 rounded-lg duration-150 ease-in">
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-1 hover:bg-action p-1 rounded-lg duration-150 ease-in"
+          >
             <TfiReload className="text-blue-500 w-3 h-3" />
           </button>
         </div>

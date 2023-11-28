@@ -2,9 +2,13 @@ import axios from "axios";
 import useSingleUser from "../../hooks/data/useSingleUser";
 
 const CreateComment = ({ postId, refetchHandle }) => {
-  const { currentUser, isLoading } = useSingleUser();
+  const { userInfo, isLoading } = useSingleUser();
 
-  const { _id } = currentUser;
+  if (isLoading) {
+    return false;
+  }
+
+  const { _id, profile_picture } = userInfo[0] || {};
 
   const commentNow = (e) => {
     e.preventDefault();
@@ -19,7 +23,7 @@ const CreateComment = ({ postId, refetchHandle }) => {
 
     axios
       .post("http://localhost:5000/comments", commentBody)
-      .then((response) => {
+      .then(() => {
         e.target.commentText.value = "";
         refetchHandle();
       })
@@ -35,7 +39,7 @@ const CreateComment = ({ postId, refetchHandle }) => {
         className="flex gap-1 items-center justify-between"
       >
         <img
-          src={user?.photoURL}
+          src={profile_picture}
           alt=""
           className="w-6 h-6 rounded-full object-cover"
         />

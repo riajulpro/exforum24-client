@@ -1,35 +1,49 @@
+import { useEffect, useState } from "react";
+import Posts from "../../../components/Home/Posts";
 import useSingleUser from "../../../hooks/data/useSingleUser";
+import axios from "axios";
 
 const MyProfile = () => {
-  const { currentUser, isLoading } = useSingleUser();
+  const [myPosts, setMyPosts] = useState([]);
 
-  const { profile_picture, name, email, badges, isAdmin, isMember } =
-    currentUser;
+  const { userInfo } = useSingleUser();
+
+  const { _id, name, email, isAdmin, isMember, badges, profile_picture } =
+    userInfo[0];
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/posts/mine/${_id}`)
+      .then((res) => setMyPosts(res.data.data))
+      .catch((err) => console.log(err));
+  }, [_id]);
 
   return (
     <div>
-      <div className="border-b-4 border-blue-400 p-8 bg-white m-4">
-        <img
-          src={profile_picture}
-          alt={`${name}'s profile`}
-          className="w-32 h-32 object-cover rounded-full mx-auto mb-4 border border-gray-200"
-        />
-        <h2 className="text-2xl font-bold text-gray-800 text-center">{name}</h2>
-        <p className="text-gray-600 text-center text-sm">{email}</p>
-        <div className="flex justify-center space-x-4 text-xs">
+      <div className="text-center p-3 bg-white m-2 rounded shadow-md">
+        <div className="flex justify-center">
+          <img
+            src={profile_picture}
+            alt=""
+            className="w-20 h-20 rounded-full border-2 border-violet-500"
+          />
+        </div>
+        <h3 className="text-3xl font-semibold">{name}</h3>
+        <p className="text-slate-500">{email}</p>
+        <p>
           {badges.map((badge, idx) => (
-            <span key={idx}>{badge}</span>
+            <p key={idx}>{badge}</p>
+          ))}
+        </p>
+        <p>{isAdmin ? "Admin" : isMember ? "Premium Member" : "New User"}</p>
+      </div>
+      <div className="p-3 bg-white m-2 rounded shadow-md">
+        <h5 className="text-xl mb-2">My recent posts: </h5>
+        <div>
+          {myPosts.slice(0, 3).map((post) => (
+            <Posts key={post._id} post={post} />
           ))}
         </div>
-        <p className="text-center text-xs">
-          Role: {isAdmin ? "Admin" : isMember ? "Premium Member" : "New User"}
-        </p>
-      </div>
-      <div className="bg-white m-4 p-5">
-        <h2 className="text-xl font-semibold mb-3 border-b-2">
-          My Recent post
-        </h2>
-        <div></div>
       </div>
     </div>
   );
