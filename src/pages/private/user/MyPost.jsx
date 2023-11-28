@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import useSingleUser from "../../../hooks/data/useSingleUser";
+import axios from "axios";
+import Posts from "../../../components/Home/Posts";
 
 const MyPost = () => {
   const [myPosts, setMyPosts] = useState([]);
 
   const { userInfo } = useSingleUser();
 
+  const firstUser = userInfo?.find((user, index) => index === 0);
+
   const { _id, name, email, isAdmin, isMember, badges, profile_picture } =
-    userInfo[0];
+    firstUser || {};
 
   useEffect(() => {
     axios
@@ -16,7 +20,13 @@ const MyPost = () => {
       .catch((err) => console.log(err));
   }, [_id]);
 
-  return <div></div>;
+  return (
+    <div className="m-2">
+      {myPosts.map((post) => (
+        <Posts key={post._id} post={post} />
+      ))}
+    </div>
+  );
 };
 
 export default MyPost;

@@ -6,10 +6,14 @@ import axios from "axios";
 const MyProfile = () => {
   const [myPosts, setMyPosts] = useState([]);
 
+  // ------------------------------------------------------------
   const { userInfo } = useSingleUser();
 
+  const firstUser = userInfo?.find((user, index) => index === 0);
+
   const { _id, name, email, isAdmin, isMember, badges, profile_picture } =
-    userInfo[0];
+    firstUser || {};
+  // ------------------------------------------------------------
 
   useEffect(() => {
     axios
@@ -20,23 +24,34 @@ const MyProfile = () => {
 
   return (
     <div>
-      <div className="text-center p-3 bg-white m-2 rounded shadow-md">
-        <div className="flex justify-center">
-          <img
-            src={profile_picture}
-            alt=""
-            className="w-20 h-20 rounded-full border-2 border-violet-500"
-          />
+      {userInfo?.map((user) => (
+        <div
+          key={user._id}
+          className="text-center p-3 bg-white m-2 rounded shadow-md"
+        >
+          <div className="flex justify-center">
+            <img
+              src={user.profile_picture}
+              alt=""
+              className="w-20 h-20 rounded-full border-2 border-violet-500"
+            />
+          </div>
+          <h3 className="text-3xl font-semibold">{user.name}</h3>
+          <p className="text-slate-500">{user.email}</p>
+          <p>
+            {user.badges.map((badge, idx) => (
+              <p key={idx}>{badge}</p>
+            ))}
+          </p>
+          <p>
+            {user.isAdmin
+              ? "Admin"
+              : user.isMember
+              ? "Premium Member"
+              : "New User"}
+          </p>
         </div>
-        <h3 className="text-3xl font-semibold">{name}</h3>
-        <p className="text-slate-500">{email}</p>
-        <p>
-          {badges.map((badge, idx) => (
-            <p key={idx}>{badge}</p>
-          ))}
-        </p>
-        <p>{isAdmin ? "Admin" : isMember ? "Premium Member" : "New User"}</p>
-      </div>
+      ))}
       <div className="p-3 bg-white m-2 rounded shadow-md">
         <h5 className="text-xl mb-2">My recent posts: </h5>
         <div>

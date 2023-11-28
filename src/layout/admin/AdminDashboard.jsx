@@ -13,7 +13,7 @@ const UserDashboard = () => {
       <div className="grid grid-cols-12">
         <div className="h-screen col-span-2 bg-white shadow sticky top-0">
           <div className="p-5 border-b text-center">
-            <Link to={"/"}>
+            <Link to={"/"} className="hover:text-violet-400">
               <h4 className="text-2xl font-semibold">ExForum24</h4>
               <h6 className="text-xs uppercase leading-3 tracking-[0.08rem]">
                 Admin Dashboard

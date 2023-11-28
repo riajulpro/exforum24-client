@@ -41,9 +41,12 @@ const Join = () => {
               "Please login now!",
               "success"
             );
-            navigateTo("/login");
+            navigateTo("/");
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            navigateTo("/");
+          });
       })
       .catch((error) => {
         console.log(error.message);

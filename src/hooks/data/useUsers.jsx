@@ -8,10 +8,10 @@ const useUsers = () => {
     error,
     data: users,
   } = useQuery({
-    queryKey: ["usersData"],
+    queryKey: ["allUsersData"],
     queryFn: async () => {
       const data = await axios.get("http://localhost:5000/users");
-      return await data.data.data;
+      return data.data.data;
     },
   });
 

@@ -17,6 +17,8 @@ import ErrorPage from "../layout/main/ErrorPage";
 import Login from "../pages/public/Login";
 import Membership from "../pages/private/Membership";
 import AnnouncementDetails from "../pages/public/AnnouncementDetails";
+import UserRoutes from "./UserRoutes";
+import AdminRoutes from "./AdminRoutes";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +42,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/membership",
-        element: <Membership />,
+        element: (
+          <UserRoutes>
+            <Membership />
+          </UserRoutes>
+        ),
       },
       {
         path: "/announcement-details/:id",
@@ -50,7 +56,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/user-dashboard",
-    element: <UserDashboard />,
+    element: (
+      <UserRoutes>
+        <UserDashboard />
+      </UserRoutes>
+    ),
     children: [
       {
         index: true,
@@ -68,7 +78,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin-dashboard",
-    element: <AdminDashboard />,
+    element: (
+      <AdminRoutes>
+        <AdminDashboard />
+      </AdminRoutes>
+    ),
     children: [
       {
         index: true,

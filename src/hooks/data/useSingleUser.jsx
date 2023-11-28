@@ -7,7 +7,11 @@ const useSingleUser = () => {
   const { user } = useContext(AuthContext);
 
   if (!user) {
-    return { isLoading: true, error: null, currentUser: null };
+    return {
+      isLoading: true,
+      error: null,
+      userInfo: [{ error: "user is not found" }],
+    };
   }
 
   const userEmail = user?.email;

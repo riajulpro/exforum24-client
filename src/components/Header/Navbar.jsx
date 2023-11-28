@@ -11,6 +11,7 @@ import { RiVipCrownLine, RiVipCrownFill, RiHome2Line } from "react-icons/ri";
 import useAnnouncements from "../../hooks/data/useAnnouncements";
 import { AuthContext } from "../../context/Authentication";
 import Announcement from "../Home/Announcement";
+import useSingleUser from "../../hooks/data/useSingleUser";
 
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -74,6 +75,15 @@ const Navbar = () => {
       document.removeEventListener("click", handleClickOutsideNotification);
     };
   }, []);
+
+  // ------------------------------------------------------------
+  const { userInfo } = useSingleUser();
+
+  const firstUser = userInfo?.find((user, index) => index === 0);
+
+  const { _id, name, email, isAdmin, isMember, badges, profile_picture } =
+    firstUser || {};
+  // ------------------------------------------------------------
 
   return (
     <nav className="bg-white text-secondary p-1 sticky top-0 z-10 shadow">
@@ -160,12 +170,21 @@ const Navbar = () => {
                     </div>
                   </div>
                   <div>
-                    <Link
-                      to="/user-dashboard"
-                      className="flex items-center gap-1 text-gray-700 hover:text-blue-500 hover:bg-gray-50 px-3 py-1"
-                    >
-                      <RiDashboardLine /> Dashboard
-                    </Link>
+                    {isAdmin ? (
+                      <Link
+                        to="/admin-dashboard"
+                        className="flex items-center gap-1 text-gray-700 hover:text-blue-500 hover:bg-gray-50 px-3 py-1"
+                      >
+                        <RiDashboardLine /> Dashboard
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/user-dashboard"
+                        className="flex items-center gap-1 text-gray-700 hover:text-blue-500 hover:bg-gray-50 px-3 py-1"
+                      >
+                        <RiDashboardLine /> Dashboard
+                      </Link>
+                    )}
                     <button
                       onClick={signOut}
                       className="flex items-center gap-1 px-3 py-1 text-gray-700 hover:text-red-500 hover:bg-gray-50 w-full text-left"

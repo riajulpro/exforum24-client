@@ -33,7 +33,7 @@ const Login = () => {
               "Please login now!",
               "success"
             );
-            navigateTo("/login");
+            navigateTo("/");
           })
           .catch((err) => console.log(err));
       })
