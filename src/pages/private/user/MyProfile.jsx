@@ -18,7 +18,7 @@ const MyProfile = () => {
     return "Loading...";
   }
 
-  const { name, email, profile_picture, badges, isMember, isAdmin } =
+  const { _id, name, email, profile_picture, badges, isMember, isAdmin } =
     currentUser[0];
 
   return (
@@ -36,6 +36,15 @@ const MyProfile = () => {
             <span key={idx}>{badge}</span>
           ))}
         </div>
+        <p className="text-center text-xs">
+          Role: {isAdmin ? "Admin" : isMember ? "Premium Member" : "New User"}
+        </p>
+      </div>
+      <div className="bg-white m-4 p-5">
+        <h2 className="text-xl font-semibold mb-3 border-b-2">
+          My Recent post
+        </h2>
+        <div></div>
       </div>
     </div>
   );

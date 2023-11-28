@@ -1,5 +1,4 @@
-import { useParams } from "react-router-dom";
-import useGetSinglePost from "../../hooks/data/useGetSinglePost";
+import { useLoaderData, useParams } from "react-router-dom";
 import useComments from "../../hooks/data/useComments";
 import Comments from "../../components/PostDetails/Comments";
 import CreateComment from "../../components/PostDetails/CreateComment";
@@ -7,14 +6,13 @@ import PostInfo from "../../components/PostDetails/PostInfo";
 
 const PostDetails = () => {
   const { id: pageId } = useParams();
-  const { singlePost = [] } = useGetSinglePost(pageId);
+
+  const { data: singlePost } = useLoaderData();
 
   const { comments = [], refetch } = useComments();
   const currentComment = comments.filter(
     (comment) => comment.forPost === pageId
   );
-
-  console.log(currentComment);
 
   return (
     <div className="md:w-9/12 mx-auto grid grid-cols-12 gap-3 my-5">

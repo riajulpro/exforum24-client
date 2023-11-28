@@ -73,7 +73,7 @@ const Home = () => {
           </div>
         </div>
         {searchResult.length > 0 ? (
-          <SearchResult refresh={setSearchResult} />
+          <SearchResult refresh={setSearchResult} result={searchResult} />
         ) : (
           <PostSection />
         )}

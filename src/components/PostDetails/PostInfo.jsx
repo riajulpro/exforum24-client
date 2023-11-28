@@ -141,7 +141,12 @@ const PostInfo = ({ post }) => {
           {/* More Options Dropdown */}
           {isMoreOptionsOpen && (
             <div className="absolute -right-5 bottom-0 mb-8 bg-white border border-gray-300 rounded p-2">
-              <p className="cursor-pointer hover:text-blue-500">Edit</p>
+              <Link
+                to={`/edit/${_id}`}
+                className="cursor-pointer hover:text-blue-500"
+              >
+                Edit
+              </Link>
               <p className="cursor-pointer hover:text-red-500">Delete</p>
             </div>
           )}
