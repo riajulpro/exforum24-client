@@ -1,25 +1,10 @@
-import { useContext } from "react";
-import { AuthContext } from "../../../context/Authentication";
 import useSingleUser from "../../../hooks/data/useSingleUser";
 
 const MyProfile = () => {
-  const { user } = useContext(AuthContext);
+  const { currentUser, isLoading } = useSingleUser();
 
-  let userEmail = "";
-
-  if (user) {
-    let userEmail = user.email;
-    console.log(userEmail);
-  }
-
-  const { currentUser = [], isLoading } = useSingleUser(userEmail);
-
-  if (isLoading) {
-    return "Loading...";
-  }
-
-  const { _id, name, email, profile_picture, badges, isMember, isAdmin } =
-    currentUser[0];
+  const { profile_picture, name, email, badges, isAdmin, isMember } =
+    currentUser;
 
   return (
     <div>

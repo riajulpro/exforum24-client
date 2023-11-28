@@ -1,27 +1,10 @@
 import axios from "axios";
-import { useContext } from "react";
-import { AuthContext } from "../../context/Authentication";
 import useSingleUser from "../../hooks/data/useSingleUser";
 
 const CreateComment = ({ postId, refetchHandle }) => {
-  // -------------------------------------------------------------
-  const { user } = useContext(AuthContext);
+  const { currentUser, isLoading } = useSingleUser();
 
-  let userEmail = "";
-
-  if (user) {
-    let userEmail = user.email;
-  }
-
-  const { currentUser = [], isLoading } = useSingleUser(userEmail);
-
-  if (isLoading) {
-    return "Loading...";
-  }
-
-  const { _id } = currentUser[0];
-
-  // -------------------------------------------------------------
+  const { _id } = currentUser;
 
   const commentNow = (e) => {
     e.preventDefault();

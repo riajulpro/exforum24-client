@@ -1,22 +1,39 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../context/Authentication";
 
-const useSingleUser = (email) => {
+const useSingleUser = () => {
+  const { user } = useContext(AuthContext);
+
+  if (!user) {
+    return { isLoading: true, error: null, currentUser: null };
+  }
+
+  const userEmail = user?.email;
+
   const {
-    isFetching,
     isLoading,
     error,
-    refetch,
-    data: currentUser,
+    data: userInfo,
   } = useQuery({
-    queryKey: ["singleUserData", email],
+    queryKey: ["singleUserData", userEmail],
     queryFn: async () => {
-      const data = await axios.get(`http://localhost:5000/users/${email}`);
-      return await data.data.data;
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/users/${userEmail}`
+        );
+        return response.data.data || null;
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error;
+      }
     },
   });
 
-  return { isFetching, isLoading, error, currentUser, refetch };
+  const currentUser = userInfo ? userInfo[0] : null;
+
+  return { isLoading, error, currentUser };
 };
 
 export default useSingleUser;

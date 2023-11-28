@@ -8,25 +8,8 @@ import axios from "axios";
 const PostForm = () => {
   const { handleSubmit, control, setValue, register } = useForm();
 
-  // -------------------------------------------------------------
-  const { user } = useContext(AuthContext);
+  const {currentUser, isLoading} = useSingleUser();
 
-  let userEmail = "";
-
-  if (user) {
-    let userEmail = user.email;
-    console.log(userEmail);
-  }
-
-  const { currentUser = [], isLoading } = useSingleUser(userEmail);
-
-  if (isLoading) {
-    return "Loading...";
-  }
-
-  const { _id } = currentUser[0];
-
-  // -------------------------------------------------------------
   const tagOptions = [
     { value: "recent", label: "Recent" },
     { value: "latest", label: "Latest" },
