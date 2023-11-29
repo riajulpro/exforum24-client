@@ -4,7 +4,7 @@ const AdminProfile = () => {
   const { userInfo } = useSingleUser();
 
   const { _id, name, email, isAdmin, isMember, badges, profile_picture } =
-    userInfo[0];
+    userInfo || {};
 
   return (
     <div>

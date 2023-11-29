@@ -20,7 +20,6 @@ const Navbar = () => {
   const notificationRef = useRef(null);
 
   const { announcements = [] } = useAnnouncements();
-  const [membership] = useState(false);
   const { user, logOut } = useContext(AuthContext);
 
   const signOut = () => {
@@ -76,15 +75,6 @@ const Navbar = () => {
     };
   }, []);
 
-  // ------------------------------------------------------------
-  const { userInfo } = useSingleUser();
-
-  const firstUser = userInfo?.find((user, index) => index === 0);
-
-  const { _id, name, email, isAdmin, isMember, badges, profile_picture } =
-    firstUser || {};
-  // ------------------------------------------------------------
-
   return (
     <nav className="bg-white text-secondary p-1 sticky top-0 z-10 shadow">
       <div className="md:w-9/12 mx-auto flex justify-between items-center">
@@ -105,11 +95,7 @@ const Navbar = () => {
               to="/membership"
               className="flex items-center gap-1 hover:bg-action p-2 rounded duration-150 ease-in"
             >
-              {membership ? (
-                <RiVipCrownFill className="w-6 h-6" />
-              ) : (
-                <RiVipCrownLine className="w-6 h-6" />
-              )}{" "}
+              <RiVipCrownLine className="w-6 h-6" />
               Membership
             </NavLink>
           </li>
@@ -170,21 +156,12 @@ const Navbar = () => {
                     </div>
                   </div>
                   <div>
-                    {isAdmin ? (
-                      <Link
-                        to="/admin-dashboard"
-                        className="flex items-center gap-1 text-gray-700 hover:text-blue-500 hover:bg-gray-50 px-3 py-1"
-                      >
-                        <RiDashboardLine /> Dashboard
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/user-dashboard"
-                        className="flex items-center gap-1 text-gray-700 hover:text-blue-500 hover:bg-gray-50 px-3 py-1"
-                      >
-                        <RiDashboardLine /> Dashboard
-                      </Link>
-                    )}
+                    <Link
+                      to="/user-dashboard"
+                      className="flex items-center gap-1 text-gray-700 hover:text-blue-500 hover:bg-gray-50 px-3 py-1"
+                    >
+                      <RiDashboardLine /> Dashboard
+                    </Link>
                     <button
                       onClick={signOut}
                       className="flex items-center gap-1 px-3 py-1 text-gray-700 hover:text-red-500 hover:bg-gray-50 w-full text-left"

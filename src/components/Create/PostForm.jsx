@@ -4,11 +4,12 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/Authentication";
 import useSingleUser from "../../hooks/data/useSingleUser";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const PostForm = () => {
-  const { handleSubmit, control, setValue, register } = useForm();
+  const { handleSubmit, control, setValue, register, reset } = useForm();
 
-  const {currentUser, isLoading} = useSingleUser();
+  const { userInfo = {}, isLoading } = useSingleUser();
 
   const tagOptions = [
     { value: "recent", label: "Recent" },
@@ -34,7 +35,7 @@ const PostForm = () => {
       title,
       content,
       tags: tagArray,
-      author: _id,
+      author: userInfo?._id,
     };
 
     console.log(apiData);
@@ -42,7 +43,16 @@ const PostForm = () => {
     // API
     axios
       .post("http://localhost:5000/posts", apiData)
-      .then((res) => console.log(res))
+      .then(() => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your post has been submitted",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        reset();
+      })
       .catch((err) => {
         console.log(err);
       });

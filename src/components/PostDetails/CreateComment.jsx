@@ -8,7 +8,7 @@ const CreateComment = ({ postId, refetchHandle }) => {
     return false;
   }
 
-  const { _id, profile_picture } = userInfo[0] || {};
+  const { _id, profile_picture, email } = userInfo;
 
   const commentNow = (e) => {
     e.preventDefault();
@@ -19,6 +19,7 @@ const CreateComment = ({ postId, refetchHandle }) => {
       forPost: postId,
       user: _id,
       text: commentText,
+      commenterEmail: email
     };
 
     axios

@@ -10,7 +10,7 @@ const useSingleUser = () => {
     return {
       isLoading: true,
       error: null,
-      userInfo: [{ error: "user is not found" }],
+      userInfo: [],
     };
   }
 

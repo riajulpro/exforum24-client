@@ -31,6 +31,8 @@ const Comments = ({ comment, refetch }) => {
       .catch((err) => console.log(err));
   };
 
+  const handleReport = () => {};
+
   const toggleMoreOptions = () => {
     setMoreOptionsOpen(!isMoreOptionsOpen);
   };
@@ -98,16 +100,21 @@ const Comments = ({ comment, refetch }) => {
                 {isMoreOptionsOpen && (
                   <div className="absolute -right-5 bottom-0 mb-8 bg-white border border-gray-300 rounded p-2">
                     <p>
-                      <button className="cursor-pointer hover:text-blue-500">Edit</button>
+                      <button className="cursor-pointer hover:text-blue-500">
+                        Edit
+                      </button>
                     </p>
                     <p>
-                      <button className="cursor-pointer hover:text-red-500"
+                      <button
+                        className="cursor-pointer hover:text-red-500"
                         onClick={(e) => deleteTheCommentItem(e, comment._id)}
                       >
                         Delete
                       </button>
                     </p>
-                    <p className="cursor-pointer hover:text-red-500">Report</p>
+                    <button className="cursor-pointer hover:text-red-500">
+                      Report
+                    </button>
                   </div>
                 )}
               </div>

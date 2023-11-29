@@ -19,6 +19,7 @@ import Membership from "../pages/private/Membership";
 import AnnouncementDetails from "../pages/public/AnnouncementDetails";
 import UserRoutes from "./UserRoutes";
 import AdminRoutes from "./AdminRoutes";
+import Payment from "../pages/private/user/Payment/Payment";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "my-post",
         element: <MyPost />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
       },
     ],
   },

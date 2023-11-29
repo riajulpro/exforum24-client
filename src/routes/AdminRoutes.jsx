@@ -8,14 +8,14 @@ const AdminRoutes = ({ children }) => {
     return "Loading";
   }
 
-  const { isAdmin } = userInfo[0];
+  const { isAdmin } = userInfo;
 
   console.log(isAdmin);
 
   if (isAdmin) {
     return children;
   } else {
-    return <Navigate to={"/login"}></Navigate>;
+    return <Navigate to={"/"}></Navigate>;
   }
 };
 
