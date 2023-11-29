@@ -4,8 +4,6 @@ import PostTable from "./PostTable";
 import { useQuery } from "@tanstack/react-query";
 
 const PostTableFrame = ({ userId }) => {
-  console.log("userId is", userId);
-
   const { data: myPosts, refetch } = useQuery({
     queryKey: ["myOwnPostsToShowSecond", userId],
     queryFn: async () => {
@@ -13,8 +11,6 @@ const PostTableFrame = ({ userId }) => {
       return res.data.data;
     },
   });
-
-  console.log("all my posts", myPosts);
 
   return (
     <div>

@@ -1,13 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import useUsers from "../../hooks/data/useUsers";
 import { LuArrowBigUp, LuArrowBigDown, LuDot } from "react-icons/lu";
 import { IoIosMore } from "react-icons/io";
 import axios from "axios";
+import { AuthContext } from "../../context/Authentication";
+import Swal from "sweetalert2";
 
 const Comments = ({ comment, refetch }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
 
   const { users = [] } = useUsers();
+
+  const { user } = useContext(AuthContext);
+
   const currentAuthor = users?.filter((user) => user._id === comment.user);
   const moreDropdownRef = useRef(null);
 
@@ -22,16 +27,30 @@ const Comments = ({ comment, refetch }) => {
   const deleteTheCommentItem = (e, id) => {
     e.preventDefault();
 
-    axios
-      .delete(`http://localhost:5000/comments/${id}`)
-      .then((res) => {
-        console.log(res);
-        refetch();
-      })
-      .catch((err) => console.log(err));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:5000/comments/${id}`)
+          .then(() => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your comment has been deleted.",
+              icon: "success",
+            });
+            refetch();
+          })
+          .catch((err) => console.log(err));
+      }
+    });
   };
-
-  const handleReport = () => {};
 
   const toggleMoreOptions = () => {
     setMoreOptionsOpen(!isMoreOptionsOpen);
@@ -54,7 +73,48 @@ const Comments = ({ comment, refetch }) => {
     };
   }, []);
 
-  console.log(currentAuthor);
+  const [activateModal, setActivateModal] = useState(false);
+
+  const [itemSelected, setItemSelected] = useState(false);
+
+  function onChangeData(e) {
+    setItemSelected(e.target.value !== "");
+  }
+
+  const handleReport = (e, commentId, commenterEmail) => {
+    e.preventDefault();
+
+    const reason = e.target.reason.value;
+
+    const reportData = {
+      forComment: commentId,
+      reason: reason,
+      commenterEmail,
+    };
+
+    if (!user) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You have to login to report!",
+        footer: '<Link to="/login">Login now to report</Link>',
+      });
+    } else {
+      axios
+        .post("http://localhost:5000/reports", reportData)
+        .then(() => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "You have successfully reported!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setActivateModal(false);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   return (
     <>
@@ -112,7 +172,10 @@ const Comments = ({ comment, refetch }) => {
                         Delete
                       </button>
                     </p>
-                    <button className="cursor-pointer hover:text-red-500">
+                    <button
+                      onClick={() => setActivateModal(true)}
+                      className="cursor-pointer hover:text-red-500"
+                    >
                       Report
                     </button>
                   </div>
@@ -122,6 +185,51 @@ const Comments = ({ comment, refetch }) => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {activateModal && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60">
+          <div className="fixed bg-white w-2/3 md:w-1/2 h-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-5 rounded-md">
+            <button
+              className="absolute top-1 right-2"
+              onClick={() => setActivateModal(false)}
+            >
+              close
+            </button>
+            <h1 className="mb-2">Select the reason of reporting:</h1>
+            <div className="relative">
+              <form
+                onSubmit={(e) =>
+                  handleReport(e, comment._id, comment.commenterEmail)
+                }
+              >
+                <div className="relative">
+                  <select
+                    onChange={onChangeData}
+                    className="border p-1 w-1/2"
+                    name="reason"
+                  >
+                    <option value="">--select--</option>
+                    <option value="verbal-abuse">Verbal Abuse</option>
+                    <option value="adult">Adult</option>
+                    <option value="irrelevant">Irrelevant</option>
+                  </select>
+                  <input
+                    type="submit"
+                    value="Report"
+                    className={`cursor-pointer ${
+                      itemSelected
+                        ? "bg-violet-600 hover:bg-violet-400 border-violet-600"
+                        : "bg-gray-200 border-gray-200"
+                    } text-white p-1 border`}
+                    disabled={!itemSelected}
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

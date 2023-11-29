@@ -20,6 +20,7 @@ import AnnouncementDetails from "../pages/public/AnnouncementDetails";
 import UserRoutes from "./UserRoutes";
 import AdminRoutes from "./AdminRoutes";
 import Payment from "../pages/private/user/Payment/Payment";
+import CommentsTableFrame from "../components/UserDashboard/CommentsTableFrame";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
       {
         path: "payment",
         element: <Payment />,
+      },
+      {
+        path: "show-comments/:id",
+        element: <CommentsTableFrame />,
       },
     ],
   },

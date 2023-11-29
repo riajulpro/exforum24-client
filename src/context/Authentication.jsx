@@ -48,7 +48,6 @@ const Authentication = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
       if (currentUser) {
         axios
           .post(
@@ -58,8 +57,11 @@ const Authentication = ({ children }) => {
               withCredentials: true,
             }
           )
-          .then()
-          .catch((err) => console.log(err));
+          .then((res) => {
+            console.log("token response", res);
+            setLoading(false);
+          })
+          .catch((err) => console.log("token calling", err));
       }
     });
     return () => {

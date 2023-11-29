@@ -10,8 +10,6 @@ const AdminRoutes = ({ children }) => {
 
   const { isAdmin } = userInfo;
 
-  console.log(isAdmin);
-
   if (isAdmin) {
     return children;
   } else {

@@ -81,7 +81,10 @@ const CheckoutForm = () => {
         setTransactionId(paymentIntent.id);
 
         axios
-          .put(`http://localhost:5000/users/${_id}`, { isMember: true })
+          .put(`http://localhost:5000/users/${_id}`, {
+            isMember: true,
+            badges: ["Gold Badge"],
+          })
           .then(() => {
             Swal.fire({
               position: "top-end",

@@ -11,6 +11,7 @@ import axios from "axios";
 
 const PostInfo = ({ post, refetch }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
+
   const moreDropdownRef = useRef(null);
 
   const { _id, author, title, content, tags, upVotes, downVotes, createdAt } =

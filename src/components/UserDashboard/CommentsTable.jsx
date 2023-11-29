@@ -2,7 +2,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const PostTable = ({ posts, refetch }) => {
+const CommentsTable = ({ comments, refetch }) => {
   const deleteThePostItem = (e, id) => {
     e.preventDefault();
 
@@ -33,33 +33,43 @@ const PostTable = ({ posts, refetch }) => {
     });
   };
 
+  const handleReportReason = (e) => {
+    const reason = e.target.value;
+
+    console.log(reason);
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">Post Title</th>
-            <th className="py-2 px-4 border-b">Number of Votes</th>
-            <th className="py-2 px-4 border-b">Comment Button</th>
-            <th className="py-2 px-4 border-b">Delete Button</th>
+            <th className="py-2 px-4 border-b">Commenter</th>
+            <th className="py-2 px-4 border-b">Comment Text</th>
+            <th className="py-2 px-4 border-b">Feedback</th>
+            <th className="py-2 px-4 border-b">Report Button</th>
           </tr>
         </thead>
         <tbody>
-          {posts?.map((post) => (
-            <tr key={post._id}>
-              <td className="py-2 px-4 border-b text-center">{post.title}</td>
-              <td className="py-2 px-4 border-b text-center">{post.upVotes}</td>
+          {comments?.map((comment) => (
+            <tr key={comment._id}>
               <td className="py-2 px-4 border-b text-center">
-                <Link
-                  to={`/user-dashboard/show-comments/${post._id}`}
-                  className="bg-blue-500 hover:opacity-90 active:scale-95 text-white py-1 px-2 rounded"
-                >
-                  Comment
-                </Link>
+                {comment.commenterEmail}
+              </td>
+              <td className="py-2 px-4 border-b text-center">{comment.text}</td>
+              <td className="py-2 px-4 border-b text-center">
+                <form>
+                  <select name="reason" onChange={handleReportReason}>
+                    <option value="">--select--</option>
+                    <option value="verbal-abuse">Verbal Abuse</option>
+                    <option value="adult">Adult</option>
+                    <option value="irrelevant">Irrelevant</option>
+                  </select>
+                </form>
               </td>
               <td className="py-2 px-4 border-b text-center">
                 <button
-                  onClick={(e) => deleteThePostItem(e, post._id)}
+                  onClick={() => reportNow(comment._id)}
                   className="bg-red-500 hover:opacity-90 active:scale-95 text-white py-1 px-2 rounded"
                 >
                   Delete
@@ -73,4 +83,4 @@ const PostTable = ({ posts, refetch }) => {
   );
 };
 
-export default PostTable;
+export default CommentsTable;

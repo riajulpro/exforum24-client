@@ -5,9 +5,12 @@ import { AuthContext } from "../../context/Authentication";
 import useSingleUser from "../../hooks/data/useSingleUser";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const PostForm = () => {
   const { handleSubmit, control, setValue, register, reset } = useForm();
+
+  const navigate = useNavigate();
 
   const { userInfo = {}, isLoading } = useSingleUser();
 
@@ -25,8 +28,6 @@ const PostForm = () => {
   ];
 
   const onSubmit = (data) => {
-    console.log("Form submitted with data:", data);
-
     const { title, content, tags } = data;
 
     const tagArray = tags.map((tag) => tag.value);
@@ -37,8 +38,6 @@ const PostForm = () => {
       tags: tagArray,
       author: userInfo?._id,
     };
-
-    console.log(apiData);
 
     // API
     axios
@@ -52,6 +51,7 @@ const PostForm = () => {
           timer: 1500,
         });
         reset();
+        navigate("/user-dashboard/my-post");
       })
       .catch((err) => {
         console.log(err);

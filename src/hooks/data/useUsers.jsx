@@ -6,6 +6,7 @@ const useUsers = () => {
     isPending,
     isLoading,
     error,
+    refetch,
     data: users,
   } = useQuery({
     queryKey: ["allUsersData"],
@@ -15,7 +16,7 @@ const useUsers = () => {
     },
   });
 
-  return { isPending, isLoading, error, users };
+  return { isPending, isLoading, error, users, refetch };
 };
 
 export default useUsers;

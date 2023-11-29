@@ -1,5 +1,8 @@
 import axios from "axios";
 import useSingleUser from "../../hooks/data/useSingleUser";
+import { useContext } from "react";
+import { AuthContext } from "../../context/Authentication";
+import Swal from "sweetalert2";
 
 const CreateComment = ({ postId, refetchHandle }) => {
   const { userInfo, isLoading } = useSingleUser();
@@ -7,6 +10,8 @@ const CreateComment = ({ postId, refetchHandle }) => {
   if (isLoading) {
     return false;
   }
+
+  const { user } = useContext(AuthContext);
 
   const { _id, profile_picture, email } = userInfo;
 
@@ -19,18 +24,34 @@ const CreateComment = ({ postId, refetchHandle }) => {
       forPost: postId,
       user: _id,
       text: commentText,
-      commenterEmail: email
+      commenterEmail: email,
     };
 
-    axios
-      .post("http://localhost:5000/comments", commentBody)
-      .then(() => {
-        e.target.commentText.value = "";
-        refetchHandle();
-      })
-      .catch((error) => {
-        console.log(error);
+    if (!user) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You have to login first to comment",
+        footer: '<Link to="/login">Login now</Link>',
       });
+    } else {
+      axios
+        .post("http://localhost:5000/comments", commentBody)
+        .then(() => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Comment successfully added",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          e.target.commentText.value = "";
+          refetchHandle();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
