@@ -62,6 +62,8 @@ const Authentication = ({ children }) => {
             console.log("token response", res);
           })
           .catch((err) => console.log("token calling", err));
+      } else {
+        setLoading(false);
       }
     });
     return () => {

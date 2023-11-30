@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const usePosts = (currentPage) => {
+// https://exforum24.vercel.app
+
+const usePosts = (currentPage, sort) => {
   const {
     isFetching,
     isLoading,
@@ -9,10 +11,12 @@ const usePosts = (currentPage) => {
     refetch,
     data: posts,
   } = useQuery({
-    queryKey: ["postsData", currentPage],
+    queryKey: ["postsData", currentPage, sort],
     queryFn: async () => {
       const data = await axios.get(
-        `https://exforum24.vercel.app/posts?page=${currentPage + 1}`
+        `https://exforum24.vercel.app/posts?page=${
+          currentPage + 1
+        }&sort=${sort}`
       );
       return await data.data;
     },

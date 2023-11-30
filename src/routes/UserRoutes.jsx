@@ -7,12 +7,12 @@ const UserRoutes = ({ children }) => {
 
   const { user, loading } = useContext(AuthContext);
 
-  if (loading) {
-    return "Please wait...";
-  }
-
   if (user) {
     return children;
+  }
+
+  if (loading) {
+    return "Please wait...";
   }
 
   return <Navigate to={"/login"} state={location.pathname}></Navigate>;
