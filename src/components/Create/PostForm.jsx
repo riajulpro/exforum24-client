@@ -82,12 +82,10 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
           });
       } else {
         Swal.fire({
-          position: "top-end",
-          icon: "warning",
-          title:
-            "You have reached the post limit. You have to purchase a subscription to post more than 5",
-          showConfirmButton: false,
-          timer: 2000,
+          icon: "error",
+          title: "Oops...",
+          text: "You cannot post more than 5!",
+          footer: '<a href="/membership">Click here to get subscription?</a>',
         });
       }
     }
