@@ -1,23 +1,13 @@
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Edit = () => {
   const { data: editedPost } = useLoaderData();
   const { _id, title, content } = editedPost[0];
 
-  const tagOptions = [
-    { value: "recent", label: "Recent" },
-    { value: "latest", label: "Latest" },
-    { value: "help", label: "Help" },
-    { value: "solved", label: "Solved" },
-    { value: "charity", label: "Charity" },
-    { value: "hot", label: "Hot" },
-    { value: "save environment", label: "Save environment" },
-    { value: "SciFi", label: "SciFi" },
-    { value: "jokes", label: "Jokes" },
-    { value: "important", label: "Important" },
-  ];
+  const navigate = useNavigate();
 
   const { register, handleSubmit, control } = useForm({
     defaultValues: {
@@ -27,13 +17,16 @@ const Edit = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-
     // API
     axios
       .put(`http://localhost:5000/posts/${_id}`, data)
       .then(() => {
-        console.log("data successfully updated");
+        Swal.fire({
+          title: "Updated!",
+          text: "Your post has been updated.",
+          icon: "success",
+        });
+        navigate(`/posts/${_id}`);
       })
       .catch((err) => {
         console.log(err);

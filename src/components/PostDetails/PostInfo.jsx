@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { IoIosMore } from "react-icons/io";
 import { LuArrowBigUp, LuArrowBigDown, LuDot } from "react-icons/lu";
 import { BiComment } from "react-icons/bi";
@@ -8,11 +8,15 @@ import useComments from "../../hooks/data/useComments";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../context/Authentication";
+import Swal from "sweetalert2";
 
 const PostInfo = ({ post, refetch }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
 
   const moreDropdownRef = useRef(null);
+
+  const { user } = useContext(AuthContext);
 
   const { _id, author, title, content, tags, upVotes, downVotes, createdAt } =
     post;
@@ -28,15 +32,23 @@ const PostInfo = ({ post, refetch }) => {
     const voteBody = {
       upVotes: vote,
     };
-    axios
-      .put(`http://localhost:5000/posts/${_id}`, voteBody)
-      .then(() => {
-        console.log("Your vote has been added to upVotes");
-        refetch();
-      })
-      .catch((err) => {
-        console.log(err);
+    if (!user) {
+      Swal.fire({
+        title: "Warning",
+        text: "Login to vote",
+        icon: "warning",
       });
+    } else {
+      axios
+        .put(`http://localhost:5000/posts/${_id}`, voteBody)
+        .then(() => {
+          console.log("Your vote has been added to upVotes");
+          refetch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handleDownVote = () => {
@@ -44,15 +56,23 @@ const PostInfo = ({ post, refetch }) => {
     const voteBody = {
       downVotes: vote,
     };
-    axios
-      .put(`http://localhost:5000/posts/${_id}`, voteBody)
-      .then(() => {
-        console.log("Your vote has been added to downVotes");
-        refetch();
-      })
-      .catch((err) => {
-        console.log(err);
+    if (!user) {
+      Swal.fire({
+        title: "Warning",
+        text: "Login to vote",
+        icon: "warning",
       });
+    } else {
+      axios
+        .put(`http://localhost:5000/posts/${_id}`, voteBody)
+        .then(() => {
+          console.log("Your vote has been added to downVotes");
+          refetch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const toggleMoreOptions = () => {

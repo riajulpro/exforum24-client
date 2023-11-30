@@ -43,12 +43,14 @@ const Home = () => {
   return (
     <div className="md:w-9/12 mx-auto grid grid-cols-12 gap-3 my-5">
       <div className="col-span-2">
-        <Link
-          to={"/user-dashboard/add-post"}
-          className="py-1 px-3 border bg-action border-gray-200 rounded cursor-pointer hover:bg-white text-sm text-center"
-        >
-          +Create Post
-        </Link>
+        {user && (
+          <Link
+            to={"/user-dashboard/add-post"}
+            className="py-1 px-3 border bg-action border-gray-200 rounded cursor-pointer hover:bg-white text-sm text-center"
+          >
+            +Create Post
+          </Link>
+        )}
       </div>
       <div className="col-span-7">
         <div className="mb-2 bg-white p-3 rounded-sm shadow">

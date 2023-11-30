@@ -21,6 +21,7 @@ import UserRoutes from "./UserRoutes";
 import AdminRoutes from "./AdminRoutes";
 import Payment from "../pages/private/user/Payment/Payment";
 import CommentsTableFrame from "../components/UserDashboard/CommentsTableFrame";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -38,16 +39,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/edit/:id",
-        element: <Edit />,
+        element: (
+          <UserRoutes>
+            <Edit />
+          </UserRoutes>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/posts/${params.id}`),
       },
       {
         path: "/membership",
         element: (
-          <UserRoutes>
+          <PrivateRoute>
             <Membership />
-          </UserRoutes>
+          </PrivateRoute>
         ),
       },
       {

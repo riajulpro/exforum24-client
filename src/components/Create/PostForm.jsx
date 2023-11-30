@@ -1,18 +1,28 @@
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
-import { useContext } from "react";
-import { AuthContext } from "../../context/Authentication";
-import useSingleUser from "../../hooks/data/useSingleUser";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
-const PostForm = () => {
+const PostForm = ({ userId, isAdmin, isMember }) => {
   const { handleSubmit, control, setValue, register, reset } = useForm();
-
   const navigate = useNavigate();
 
-  const { userInfo = {}, isLoading } = useSingleUser();
+  const { data: myOwnPosts, refetch } = useQuery({
+    queryKey: ["myOwnPostsToShowThird", userId],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:5000/posts/mine/${userId}`,
+        { withCredentials: true }
+      );
+      return res.data.data;
+    },
+  });
+
+  console.log(isAdmin, isMember);
+
+  const createdPost = myOwnPosts?.length;
 
   const tagOptions = [
     { value: "recent", label: "Recent" },
@@ -29,33 +39,64 @@ const PostForm = () => {
 
   const onSubmit = (data) => {
     const { title, content, tags } = data;
-
     const tagArray = tags.map((tag) => tag.value);
 
     const apiData = {
       title,
       content,
       tags: tagArray,
-      author: userInfo?._id,
+      author: userId,
     };
 
-    // API
-    axios
-      .post("http://localhost:5000/posts", apiData)
-      .then(() => {
+    // Condition
+    if (isMember || isAdmin) {
+      axios
+        .post("http://localhost:5000/posts", apiData, { withCredentials: true })
+        .then(() => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your post has been submitted",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          reset();
+          navigate("/user-dashboard/my-post");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      if (createdPost < 5) {
+        axios
+          .post("http://localhost:5000/posts", apiData, {
+            withCredentials: true,
+          })
+          .then(() => {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Your post has been submitted",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            reset();
+            navigate("/user-dashboard/my-post");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
         Swal.fire({
           position: "top-end",
-          icon: "success",
-          title: "Your post has been submitted",
+          icon: "warning",
+          title:
+            "You have reached the post limit. You have to purchase a subscription to post more than 5",
           showConfirmButton: false,
-          timer: 1500,
+          timer: 2000,
         });
-        reset();
-        navigate("/user-dashboard/my-post");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+    }
   };
 
   return (

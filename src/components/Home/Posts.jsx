@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { IoIosMore } from "react-icons/io";
 import { LuArrowBigUp, LuArrowBigDown, LuDot } from "react-icons/lu";
 import { BiComment } from "react-icons/bi";
@@ -8,10 +8,14 @@ import useComments from "../../hooks/data/useComments";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../context/Authentication";
 
 const Posts = ({ post, refetch }) => {
   const [isMoreOptionsOpen, setMoreOptionsOpen] = useState(false);
   const moreDropdownRef = useRef(null);
+
+  const { user } = useContext(AuthContext);
 
   const { _id, author, title, content, tags, upVotes, downVotes, createdAt } =
     post;
@@ -27,15 +31,24 @@ const Posts = ({ post, refetch }) => {
     const voteBody = {
       upVotes: vote,
     };
-    axios
-      .put(`http://localhost:5000/posts/${_id}`, voteBody)
-      .then(() => {
-        console.log("Your vote has been added to upVotes");
-        refetch();
-      })
-      .catch((err) => {
-        console.log(err);
+
+    if (!user) {
+      Swal.fire({
+        title: "Warning",
+        text: "Login to vote",
+        icon: "warning",
       });
+    } else {
+      axios
+        .put(`http://localhost:5000/posts/${_id}`, voteBody)
+        .then(() => {
+          console.log("Your vote has been added to upVotes");
+          refetch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handleDownVote = () => {
@@ -43,27 +56,59 @@ const Posts = ({ post, refetch }) => {
     const voteBody = {
       downVotes: vote,
     };
-    axios
-      .put(`http://localhost:5000/posts/${_id}`, voteBody)
-      .then(() => {
-        console.log("Your vote has been added to downVotes");
-        refetch();
-      })
-      .catch((err) => {
-        console.log(err);
+    if (!user) {
+      Swal.fire({
+        title: "Warning",
+        text: "Login to vote",
+        icon: "warning",
       });
+    } else {
+      axios
+        .put(`http://localhost:5000/posts/${_id}`, voteBody)
+        .then(() => {
+          console.log("Your vote has been added to downVotes");
+          refetch();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const deleteThePostItem = (e, id) => {
     e.preventDefault();
 
-    axios
-      .delete(`http://localhost:5000/posts/${id}`)
-      .then((res) => {
-        console.log(res);
-        refetch();
-      })
-      .catch((err) => console.log(err));
+    if (!user) {
+      Swal.fire({
+        title: "Warning",
+        text: "Login to delete the post",
+        icon: "warning",
+      });
+    } else {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:5000/posts/${id}`)
+            .then((res) => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your post has been deleted.",
+                icon: "success",
+              });
+              refetch();
+            })
+            .catch((err) => console.log(err));
+        }
+      });
+    }
   };
 
   const toggleMoreOptions = () => {
@@ -118,7 +163,7 @@ const Posts = ({ post, refetch }) => {
     <div className="bg-white shadow rounded-sm p-3 mb-2 relative">
       <div className="flex items-center mb-2">
         <img
-          src={currentAuthor[0]?.profile_picture} // Replace with the actual path to the user's profile picture
+          src={currentAuthor[0]?.profile_picture}
           alt="User Profile"
           className="w-7 h-7 rounded-full mr-2"
         />
@@ -192,7 +237,10 @@ const Posts = ({ post, refetch }) => {
             <BiComment className="text-blue-500 w-4 h-4" />
             <span className="text-gray-800 ml-1">{currentComment.length}</span>
           </Link>
-          <button onClick={handleShare} className="flex items-center gap-1 hover:bg-action p-1 rounded-lg duration-150 ease-in">
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-1 hover:bg-action p-1 rounded-lg duration-150 ease-in"
+          >
             <TfiReload className="text-blue-500 w-3 h-3" />
           </button>
         </div>

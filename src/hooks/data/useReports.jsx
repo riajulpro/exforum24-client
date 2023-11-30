@@ -11,7 +11,9 @@ const useReports = () => {
   } = useQuery({
     queryKey: ["reportsData"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/reports");
+      const data = await axios.get("http://localhost:5000/reports", {
+        withCredentials: true,
+      });
       return await data.data.data;
     },
   });
