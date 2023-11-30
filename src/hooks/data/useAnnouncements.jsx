@@ -11,9 +11,12 @@ const useAnnouncements = () => {
   } = useQuery({
     queryKey: ["announcementData"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/announcements", {
-        withCredentials: true,
-      });
+      const data = await axios.get(
+        "https://exforum24.vercel.app/announcements",
+        {
+          withCredentials: true,
+        }
+      );
       return await data.data.data;
     },
   });

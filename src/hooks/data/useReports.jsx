@@ -12,7 +12,7 @@ const useReports = (currentPage) => {
     queryKey: ["reportsData"],
     queryFn: async () => {
       const data = await axios.get(
-        `http://localhost:5000/reports?page=${currentPage + 1}`,
+        `https://exforum24.vercel.app/reports?page=${currentPage + 1}`,
         {
           withCredentials: true,
         }

@@ -11,7 +11,7 @@ const usePostTags = () => {
   } = useQuery({
     queryKey: ["allPostTagsData"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/tags`, {
+      const res = await axios.get(`https://exforum24.vercel.app/tags`, {
         withCredentials: true,
       });
       return await res.data.data;

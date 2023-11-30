@@ -7,7 +7,9 @@ const RecentPosts = ({ userId }) => {
   const { data: myPosts, refetch } = useQuery({
     queryKey: ["myOwnPostsToShow", userId],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/posts/mine/${userId}`);
+      const res = await axios.get(
+        `https://exforum24.vercel.app/posts/mine/${userId}`
+      );
       return res.data.data;
     },
   });

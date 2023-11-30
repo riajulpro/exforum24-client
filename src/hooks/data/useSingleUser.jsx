@@ -25,7 +25,7 @@ const useSingleUser = () => {
     queryFn: async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/users/${userEmail}`
+          `https://exforum24.vercel.app/users/${userEmail}`
         );
         return response.data.data || null;
       } catch (error) {

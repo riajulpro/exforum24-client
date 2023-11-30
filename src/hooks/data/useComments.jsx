@@ -11,7 +11,7 @@ const useComments = () => {
   } = useQuery({
     queryKey: ["commentsData"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/comments");
+      const data = await axios.get("https://exforum24.vercel.app/comments");
       return await data.data.data;
     },
   });

@@ -12,7 +12,7 @@ const useUsersForAdmin = (currentPage) => {
     queryKey: ["allUsersForAdminData"],
     queryFn: async () => {
       const data = await axios.get(
-        `http://localhost:5000/users/pages?page=${currentPage + 1}`
+        `https://exforum24.vercel.app/users/pages?page=${currentPage + 1}`
       );
       return data.data;
     },

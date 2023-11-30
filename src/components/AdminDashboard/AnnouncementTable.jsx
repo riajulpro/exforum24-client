@@ -17,7 +17,7 @@ const AnnouncementTable = ({ announcements, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/announcements/${id}`, {
+          .delete(`https://exforum24.vercel.app/announcements/${id}`, {
             withCredentials: true,
           })
           .then((res) => {

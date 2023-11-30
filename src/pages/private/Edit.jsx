@@ -19,7 +19,9 @@ const Edit = () => {
   const onSubmit = (data) => {
     // API
     axios
-      .put(`http://localhost:5000/posts/${_id}`, data)
+      .put(`https://exforum24.vercel.app/posts/${_id}`, data, {
+        withCredentials: true,
+      })
       .then(() => {
         Swal.fire({
           title: "Updated!",

@@ -40,7 +40,7 @@ const PostInfo = ({ post, refetch }) => {
       });
     } else {
       axios
-        .put(`http://localhost:5000/posts/${_id}`, voteBody, {
+        .put(`https://exforum24.vercel.app/posts/${_id}`, voteBody, {
           withCredentials: true,
         })
         .then(() => {
@@ -66,7 +66,9 @@ const PostInfo = ({ post, refetch }) => {
       });
     } else {
       axios
-        .put(`http://localhost:5000/posts/${_id}`, voteBody)
+        .put(`https://exforum24.vercel.app/posts/${_id}`, voteBody, {
+          withCredentials: true,
+        })
         .then(() => {
           console.log("Your vote has been added to downVotes");
           refetch();
@@ -230,13 +232,7 @@ const PostInfo = ({ post, refetch }) => {
           {/* More Options Dropdown */}
           {isMoreOptionsOpen && (
             <div className="absolute -right-5 bottom-0 mb-8 bg-white border border-gray-300 rounded p-2">
-              <Link
-                to={`/edit/${_id}`}
-                className="cursor-pointer hover:text-blue-500"
-              >
-                Edit
-              </Link>
-              <p className="cursor-pointer hover:text-red-500">Delete</p>
+              <p>...more</p>
             </div>
           )}
         </div>

@@ -26,7 +26,9 @@ const Login = () => {
         };
 
         axios
-          .post("http://localhost:5000/users", userBody)
+          .post("https://exforum24.vercel.app/users", userBody, {
+            withCredentials: true,
+          })
           .then(() => {
             Swal.fire(
               "You have successfully register!",

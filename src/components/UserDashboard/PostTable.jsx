@@ -17,7 +17,9 @@ const PostTable = ({ posts, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/posts/${id}`)
+          .delete(`https://exforum24.vercel.app/posts/${id}`, {
+            withCredentials: true,
+          })
           .then((res) => {
             console.log(res);
             refetch();
@@ -41,7 +43,7 @@ const PostTable = ({ posts, refetch }) => {
             <th className="py-2 px-4 border-b">Post Title</th>
             <th className="py-2 px-4 border-b">Number of Votes</th>
             <th className="py-2 px-4 border-b">Comment Button</th>
-            <th className="py-2 px-4 border-b">Delete Button</th>
+            <th className="py-2 px-4 border-b">Action Button</th>
           </tr>
         </thead>
         <tbody>
@@ -58,9 +60,14 @@ const PostTable = ({ posts, refetch }) => {
                 </Link>
               </td>
               <td className="py-2 px-4 border-b text-center">
+                <Link to={`/edit/${post._id}`}>
+                  <button className="bg-green-500 hover:opacity-90 active:scale-95 text-white p-1 rounded-l text-xs">
+                    Edit
+                  </button>
+                </Link>
                 <button
                   onClick={(e) => deleteThePostItem(e, post._id)}
-                  className="bg-red-500 hover:opacity-90 active:scale-95 text-white py-1 px-2 rounded"
+                  className="bg-red-500 hover:opacity-90 active:scale-95 text-white p-1 text-xs rounded-r"
                 >
                   Delete
                 </button>

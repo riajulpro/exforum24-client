@@ -45,7 +45,7 @@ const router = createBrowserRouter([
           </UserRoutes>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/posts/${params.id}`),
+          fetch(`https://exforum24.vercel.app/posts/${params.id}`),
       },
       {
         path: "/membership",

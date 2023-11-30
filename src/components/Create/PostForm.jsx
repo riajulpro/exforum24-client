@@ -14,7 +14,7 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
     queryKey: ["myOwnPostsToShowThird", userId],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5000/posts/mine/${userId}`,
+        `https://exforum24.vercel.app/posts/mine/${userId}`,
         { withCredentials: true }
       );
       return res.data.data;
@@ -43,7 +43,9 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
     // Condition
     if (isMember || isAdmin) {
       axios
-        .post("http://localhost:5000/posts", apiData, { withCredentials: true })
+        .post("https://exforum24.vercel.app/posts", apiData, {
+          withCredentials: true,
+        })
         .then(() => {
           Swal.fire({
             position: "top-end",
@@ -61,7 +63,7 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
     } else {
       if (createdPost < 5) {
         axios
-          .post("http://localhost:5000/posts", apiData, {
+          .post("https://exforum24.vercel.app/posts", apiData, {
             withCredentials: true,
           })
           .then(() => {
@@ -93,6 +95,7 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
 
   return (
     <div className="w-11/12 md:w-1/2 mx-auto">
+      <h3 className="text-lg font-semibold mb-2">Create post:</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"

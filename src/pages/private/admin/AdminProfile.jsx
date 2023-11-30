@@ -1,5 +1,6 @@
 import Chart from "../../../components/AdminDashboard/Chart";
 import CreateTagsOption from "../../../components/AdminDashboard/CreateTagsOption";
+import TagsFrame from "../../../components/AdminDashboard/TagsFrame";
 import useComments from "../../../hooks/data/useComments";
 import useSingleUser from "../../../hooks/data/useSingleUser";
 import useTotalPosts from "../../../hooks/data/useTotalPosts";
@@ -76,6 +77,9 @@ const AdminProfile = () => {
       </div>
       <div className="w-11/12 mx-auto p-3 bg-white rounded shadow-md my-2">
         <CreateTagsOption />
+      </div>
+      <div className="w-11/12 mx-auto p-3 bg-white rounded shadow-md my-2">
+        <TagsFrame />
       </div>
     </div>
   );

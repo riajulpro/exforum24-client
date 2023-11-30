@@ -17,7 +17,7 @@ const CommentsTable = ({ comments, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/posts/${id}`)
+          .delete(`https://exforum24.vercel.app/posts/${id}`)
           .then((res) => {
             console.log(res);
             refetch();

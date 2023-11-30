@@ -11,7 +11,7 @@ const useTags = () => {
   } = useQuery({
     queryKey: ["tagsData"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/posts/tags");
+      const data = await axios.get("https://exforum24.vercel.app/posts/tags");
       return await data.data.uniqueTags;
     },
   });

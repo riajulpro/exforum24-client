@@ -1,15 +1,20 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import usePostTags from "../../hooks/data/usePostTags";
 
 const CreateTagsOption = () => {
   const { register, handleSubmit, reset } = useForm();
+
+  const { refetch } = usePostTags();
 
   const onSubmit = (data) => {
     console.log(data);
 
     axios
-      .post("http://localhost:5000/tags", data, { withCredentials: true })
+      .post("https://exforum24.vercel.app/tags", data, {
+        withCredentials: true,
+      })
       .then(() => {
         Swal.fire({
           position: "top-end",
@@ -19,6 +24,7 @@ const CreateTagsOption = () => {
           timer: 1500,
         });
         reset();
+        refetch();
       })
       .catch((err) => console.log("Tags adding error: ", err));
   };

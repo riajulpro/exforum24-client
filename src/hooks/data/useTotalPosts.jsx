@@ -11,7 +11,9 @@ const useTotalPosts = () => {
   } = useQuery({
     queryKey: ["totalPosts"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/posts/totalPosts");
+      const data = await axios.get(
+        "https://exforum24.vercel.app/posts/totalPosts"
+      );
       return data.data.totalPosts;
     },
   });

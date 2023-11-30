@@ -11,7 +11,7 @@ const useUsers = () => {
   } = useQuery({
     queryKey: ["allUsersData"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/users");
+      const data = await axios.get("https://exforum24.vercel.app/users");
       return data.data.data;
     },
   });

@@ -51,7 +51,7 @@ const Authentication = ({ children }) => {
       if (currentUser) {
         axios
           .post(
-            "http://localhost:5000/jwt",
+            "https://exforum24.vercel.app/jwt",
             { email: currentUser.email },
             {
               withCredentials: true,

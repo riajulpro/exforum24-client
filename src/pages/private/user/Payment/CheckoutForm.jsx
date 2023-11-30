@@ -20,9 +20,13 @@ const CheckoutForm = () => {
   useEffect(() => {
     if (totalPrice > 0) {
       axios
-        .post("http://localhost:5000/create-payment-intent", {
-          price: totalPrice,
-        })
+        .post(
+          "https://exforum24.vercel.app/create-payment-intent",
+          {
+            price: totalPrice,
+          },
+          { withCredentials: true }
+        )
         .then((res) => {
           console.log(res.data.clientSecret);
           setClientSecret(res.data.clientSecret);
@@ -81,10 +85,14 @@ const CheckoutForm = () => {
         setTransactionId(paymentIntent.id);
 
         axios
-          .put(`http://localhost:5000/users/${_id}`, {
-            isMember: true,
-            badges: ["Gold Badge"],
-          })
+          .put(
+            `https://exforum24.vercel.app/users/${_id}`,
+            {
+              isMember: true,
+              badges: ["Gold Badge"],
+            },
+            { withCredentials: true }
+          )
           .then(() => {
             Swal.fire({
               position: "top-end",

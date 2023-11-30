@@ -24,7 +24,7 @@ const MakeAnnouncement = () => {
     };
 
     axios
-      .post("http://localhost:5000/announcements", announcement, {
+      .post("https://exforum24.vercel.app/announcements", announcement, {
         withCredentials: true,
       })
       .then(() => {

@@ -14,7 +14,9 @@ const PostTableFrame = ({ userId }) => {
     queryKey: ["myPostPageByPage", userId, currentPage],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5000/posts/mine/${userId}?page=${currentPage + 1}`,
+        `https://exforum24.vercel.app/posts/mine/${userId}?page=${
+          currentPage + 1
+        }`,
         { withCredentials: true }
       );
       return res.data;

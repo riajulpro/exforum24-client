@@ -38,7 +38,7 @@ const Comments = ({ comment, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/comments/${id}`, {
+          .delete(`https://exforum24.vercel.app/comments/${id}`, {
             withCredentials: true,
           })
           .then(() => {
@@ -103,7 +103,9 @@ const Comments = ({ comment, refetch }) => {
       });
     } else {
       axios
-        .post("http://localhost:5000/reports", reportData)
+        .post("https://exforum24.vercel.app/reports", reportData, {
+          withCredentials: true,
+        })
         .then(() => {
           Swal.fire({
             position: "top-end",

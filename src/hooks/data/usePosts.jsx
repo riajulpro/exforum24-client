@@ -12,7 +12,7 @@ const usePosts = (currentPage) => {
     queryKey: ["postsData", currentPage],
     queryFn: async () => {
       const data = await axios.get(
-        `http://localhost:5000/posts?page=${currentPage + 1}`
+        `https://exforum24.vercel.app/posts?page=${currentPage + 1}`
       );
       return await data.data;
     },

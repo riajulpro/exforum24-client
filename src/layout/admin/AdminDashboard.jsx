@@ -34,6 +34,7 @@ const UserDashboard = () => {
             <NavLink to={"/admin-dashboard/make-announcement"}>
               Make Announcement
             </NavLink>
+            <Link to={"/user-dashboard/add-post"}>Create Post</Link>
           </div>
         </div>
         <div className="col-span-12 md:col-span-10">

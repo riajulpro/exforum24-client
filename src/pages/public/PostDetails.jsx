@@ -17,7 +17,9 @@ const PostDetails = () => {
   const { data: singlePost = [], refetch: postRefetch } = useQuery({
     queryKey: ["SingleDetailsPost", pageId],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/posts/${pageId}`);
+      const res = await axios.get(
+        `https://exforum24.vercel.app/posts/${pageId}`
+      );
       return res.data.data;
     },
   });

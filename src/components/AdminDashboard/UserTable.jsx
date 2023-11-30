@@ -15,7 +15,11 @@ const UserTable = ({ users, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .put(`http://localhost:5000/users/${id}`, { isAdmin: true })
+          .put(
+            `https://exforum24.vercel.app/users/${id}`,
+            { isAdmin: true },
+            { withCredentials: true }
+          )
           .then((res) => {
             console.log(res);
             refetch();

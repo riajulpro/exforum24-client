@@ -36,7 +36,9 @@ const CreateComment = ({ postId, refetchHandle }) => {
       });
     } else {
       axios
-        .post("http://localhost:5000/comments", commentBody)
+        .post("https://exforum24.vercel.app/comments", commentBody, {
+          withCredentials: true,
+        })
         .then(() => {
           Swal.fire({
             position: "top-end",

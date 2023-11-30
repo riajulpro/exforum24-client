@@ -18,7 +18,7 @@ const Home = () => {
     const searchItem = e.target.searchItem.value;
 
     axios
-      .get(`http://localhost:5000/posts/search?q=${searchItem}`)
+      .get(`https://exforum24.vercel.app/posts/search?q=${searchItem}`)
       .then(function (response) {
         setSearchResult(response.data.data);
       })
@@ -29,7 +29,7 @@ const Home = () => {
 
   const searchByTags = (tag) => {
     axios
-      .get(`http://localhost:5000/posts/search?q=${tag}`)
+      .get(`https://exforum24.vercel.app/posts/search?q=${tag}`)
       .then(function (response) {
         setSearchResult(response.data.data);
       })
@@ -62,7 +62,7 @@ const Home = () => {
               type="text"
               name="searchItem"
               placeholder="Enter any tags to find"
-              className="text-sm w-1/2 md:w-9/12 py-1 px-2 rounded-l-full border-gray-200 border md:mb-2"
+              className="text-sm w-1/2 md:w-9/12 py-1 px-2 rounded-l-full border-gray-200 border"
             />
             <input
               type="submit"
