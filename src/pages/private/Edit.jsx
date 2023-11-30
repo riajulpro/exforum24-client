@@ -34,9 +34,9 @@ const Edit = () => {
   };
 
   return (
-    <div className="w-9/12 mx-auto grid grid-cols-12 gap-2">
-      <div className="col-span-2"></div>
-      <div className="col-span-7 mt-3 bg-white rounded p-3">
+    <div className="w-11/12 md:w-9/12 mx-auto grid grid-cols-12 gap-2">
+      <div className="col-span-12 md:col-span-2"></div>
+      <div className="col-span-12 md:col-span-7 mt-3 bg-white rounded p-3">
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="title" className="text-gray-800">
             Title:
@@ -65,7 +65,7 @@ const Edit = () => {
           />
         </form>
       </div>
-      <div className="col-span-3"></div>
+      <div className="col-span-12 md:col-span-3"></div>
     </div>
   );
 };

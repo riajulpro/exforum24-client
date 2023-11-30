@@ -2,11 +2,15 @@ import { useForm } from "react-hook-form";
 import useSingleUser from "../../../hooks/data/useSingleUser";
 import axios from "axios";
 import Swal from "sweetalert2";
+import AnnouncementFrame from "../../../components/AdminDashboard/AnnouncementFrame";
+import useAnnouncements from "../../../hooks/data/useAnnouncements";
 
 const MakeAnnouncement = () => {
   const { handleSubmit, register, reset } = useForm();
 
   const { userInfo = {} } = useSingleUser();
+
+  const { refetch } = useAnnouncements();
 
   const { _id } = userInfo;
 
@@ -20,7 +24,9 @@ const MakeAnnouncement = () => {
     };
 
     axios
-      .post("http://localhost:5000/announcements", announcement)
+      .post("http://localhost:5000/announcements", announcement, {
+        withCredentials: true,
+      })
       .then(() => {
         Swal.fire({
           position: "top-end",
@@ -31,6 +37,8 @@ const MakeAnnouncement = () => {
         });
 
         reset();
+
+        refetch();
       })
       .catch((err) => console.log(err));
   };
@@ -38,7 +46,9 @@ const MakeAnnouncement = () => {
   return (
     <div>
       <div className="p-3 bg-white m-2 rounded shadow-md">
-        <h4 className="text-xl font-semibold mb-2">Create an Announcement:</h4>
+        <h4 className="text-lg md:text-xl font-semibold mb-2">
+          Create an Announcement:
+        </h4>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
@@ -59,6 +69,9 @@ const MakeAnnouncement = () => {
             />
           </form>
         </div>
+      </div>
+      <div>
+        <AnnouncementFrame />
       </div>
     </div>
   );

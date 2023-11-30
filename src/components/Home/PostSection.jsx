@@ -20,7 +20,7 @@ const PostSection = () => {
           <Posts post={post} refetch={refetch} key={post._id} />
         ))}
       </div>
-      <div className="flex justify-center my-5">
+      <div className="flex justify-center md:my-5">
         <div>
           <button
             className="bg-gray-100 p-2 border-r"

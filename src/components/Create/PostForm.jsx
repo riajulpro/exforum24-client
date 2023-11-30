@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import usePostTags from "../../hooks/data/usePostTags";
 
 const PostForm = ({ userId, isAdmin, isMember }) => {
   const { handleSubmit, control, setValue, register, reset } = useForm();
@@ -24,18 +25,9 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
 
   const createdPost = myOwnPosts?.length;
 
-  const tagOptions = [
-    { value: "recent", label: "Recent" },
-    { value: "latest", label: "Latest" },
-    { value: "help", label: "Help" },
-    { value: "solved", label: "Solved" },
-    { value: "charity", label: "Charity" },
-    { value: "hot", label: "Hot" },
-    { value: "save environment", label: "Save environment" },
-    { value: "SciFi", label: "SciFi" },
-    { value: "jokes", label: "Jokes" },
-    { value: "important", label: "Important" },
-  ];
+  const { allTags = [] } = usePostTags();
+
+  console.log(allTags);
 
   const onSubmit = (data) => {
     const { title, content, tags } = data;
@@ -100,7 +92,7 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
   };
 
   return (
-    <div className="w-1/2 mx-auto">
+    <div className="w-11/12 md:w-1/2 mx-auto">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -144,7 +136,7 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
             render={({ field }) => (
               <Select
                 {...field}
-                options={tagOptions}
+                options={allTags}
                 isMulti
                 onChange={(selectedOptions) =>
                   setValue("tags", selectedOptions)

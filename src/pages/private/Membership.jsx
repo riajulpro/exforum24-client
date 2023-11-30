@@ -8,16 +8,16 @@ const Membership = () => {
     userInfo;
 
   return (
-    <div className="w-9/12 mx-auto grid grid-cols-12 gap-2">
-      <div className="col-span-2"></div>
-      <div className="col-span-7">
+    <div className="grid grid-cols-12 w-11/12 md:w-9/12 mx-auto gap-2">
+      <div className="col-span-12 md:col-span-2"></div>
+      <div className="col-span-12 md:col-span-7">
         {isMember ? (
           <div className="bg-white shadow-lg m-2 p-5 rounded-md hover:text-violet-400">
-            <h3 className="font-bold text-3xl">Congratulation!</h3>
-            <h4 className="font-semibold text-xl">
+            <h3 className="font-bold text-xl md:text-3xl">Congratulation!</h3>
+            <h4 className="font-semibold text-lg md:text-xl">
               You have Premium Membership
             </h4>
-            <p className="text-slate-600">
+            <p className="text-slate-600 text-sm md:text-base">
               You can post more than 5 if you have subscribe as a premium
               member.
             </p>
@@ -41,7 +41,7 @@ const Membership = () => {
           </div>
         )}
       </div>
-      <div className="col-span-3"></div>
+      <div className="col-span-12 md:col-span-3"></div>
     </div>
   );
 };

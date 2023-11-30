@@ -78,7 +78,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white text-secondary p-1 sticky top-0 z-10 shadow">
       <div className="md:w-9/12 mx-auto flex justify-between items-center">
-        <div className="text-xl font-bold">
+        <div className="text-sm md:text-xl font-bold">
           <Link to={"/"}>ExForum24</Link>
         </div>
         <ul className="flex space-x-1 items-center uppercase">
@@ -87,7 +87,8 @@ const Navbar = () => {
               to="/"
               className="flex items-center gap-1 hover:bg-action p-2 rounded duration-150 ease-in"
             >
-              <RiHome2Line className="w-6 h-6" /> Home
+              <RiHome2Line className="w-6 h-6" />{" "}
+              <span className="hidden md:inline">Home</span>
             </NavLink>
           </li>
           <li>
@@ -96,7 +97,7 @@ const Navbar = () => {
               className="flex items-center gap-1 hover:bg-action p-2 rounded duration-150 ease-in"
             >
               <RiVipCrownLine className="w-6 h-6" />
-              Membership
+              <span className="hidden md:inline">Membership</span>
             </NavLink>
           </li>
           <li className="relative" ref={notificationRef}>

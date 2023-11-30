@@ -5,9 +5,14 @@ import CreateComment from "../../components/PostDetails/CreateComment";
 import PostInfo from "../../components/PostDetails/PostInfo";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import CommentSectionDemo from "../../components/PostDetails/CommentSectionDemo";
+import { useContext } from "react";
+import { AuthContext } from "../../context/Authentication";
 
 const PostDetails = () => {
   const { id: pageId } = useParams();
+
+  const { user } = useContext(AuthContext);
 
   const { data: singlePost = [], refetch: postRefetch } = useQuery({
     queryKey: ["SingleDetailsPost", pageId],
@@ -23,9 +28,9 @@ const PostDetails = () => {
   );
 
   return (
-    <div className="md:w-9/12 mx-auto grid grid-cols-12 gap-3 my-5">
-      <div className="col-span-2"></div>
-      <div className="col-span-7">
+    <div className="w-11/12 md:w-9/12 mx-auto grid grid-cols-12 gap-3 mt-1 md:my-5">
+      <div className="col-span-12 md:col-span-2"></div>
+      <div className="col-span-12 md:col-span-7">
         <div>
           {singlePost.map((current) => (
             <PostInfo key={current._id} post={current} refetch={postRefetch} />
@@ -33,6 +38,7 @@ const PostDetails = () => {
         </div>
         <div>
           <CreateComment postId={pageId} refetchHandle={refetch} />
+          {!user && <CommentSectionDemo />}
         </div>
         <div>
           {currentComment?.map((comment) => (
@@ -40,7 +46,7 @@ const PostDetails = () => {
           ))}
         </div>
       </div>
-      <div className="col-span-3"></div>
+      <div className="col-span-12 md:col-span-3"></div>
     </div>
   );
 };

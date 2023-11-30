@@ -7,7 +7,7 @@ const AddPost = () => {
   const { _id: userId, isAdmin, isMember } = userInfo;
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="md:h-screen mt-3 md:mt-0 flex justify-center items-center">
       <PostForm userId={userId} isAdmin={isAdmin} isMember={isMember} />
     </div>
   );

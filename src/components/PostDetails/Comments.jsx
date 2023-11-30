@@ -38,7 +38,9 @@ const Comments = ({ comment, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/comments/${id}`)
+          .delete(`http://localhost:5000/comments/${id}`, {
+            withCredentials: true,
+          })
           .then(() => {
             Swal.fire({
               title: "Deleted!",

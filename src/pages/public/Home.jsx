@@ -41,18 +41,18 @@ const Home = () => {
   const { tags = [] } = useTags();
 
   return (
-    <div className="md:w-9/12 mx-auto grid grid-cols-12 gap-3 my-5">
-      <div className="col-span-2">
+    <div className="grid grid-cols-12 gap-1 w-11/12 md:w-9/12 mx-auto md:gap-3 my-5">
+      <div className="col-span-12 md:col-span-2 md:mb-4">
         {user && (
           <Link
             to={"/user-dashboard/add-post"}
-            className="py-1 px-3 border bg-action border-gray-200 rounded cursor-pointer hover:bg-white text-sm text-center"
+            className="py-1 px-3 border bg-action border-gray-200 rounded cursor-pointer hover:bg-white text-sm text-center block md:inline-block"
           >
             +Create Post
           </Link>
         )}
       </div>
-      <div className="col-span-7">
+      <div className="col-span-12 md:col-span-7 md:mb-4">
         <div className="mb-2 bg-white p-3 rounded-sm shadow">
           <form
             onSubmit={searchNow}
@@ -62,7 +62,7 @@ const Home = () => {
               type="text"
               name="searchItem"
               placeholder="Enter any tags to find"
-              className="text-sm w-9/12 py-1 px-2 rounded-l-full border-gray-200 border"
+              className="text-sm w-1/2 md:w-9/12 py-1 px-2 rounded-l-full border-gray-200 border md:mb-2"
             />
             <input
               type="submit"
@@ -91,7 +91,7 @@ const Home = () => {
           <PostSection />
         )}
       </div>
-      <div className="col-span-3">
+      <div className="col-span-12 md:col-span-3">
         <Announcement />
       </div>
     </div>

@@ -96,7 +96,9 @@ const Posts = ({ post, refetch }) => {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://localhost:5000/posts/${id}`)
+            .delete(`http://localhost:5000/posts/${id}`, {
+              withCredentials: true,
+            })
             .then((res) => {
               Swal.fire({
                 title: "Deleted!",
@@ -163,20 +165,37 @@ const Posts = ({ post, refetch }) => {
     <div className="bg-white shadow rounded-sm p-3 mb-2 relative">
       <div className="flex items-center mb-2">
         <img
-          src={currentAuthor[0]?.profile_picture}
+          src={currentAuthor[0]?.profile_picture} // Replace with the actual path to the user's profile picture
           alt="User Profile"
           className="w-7 h-7 rounded-full mr-2"
         />
         <div>
-          <div className="flex items-center">
+          <div className="hidden md:flex flex-row items-center">
             <span className="text-gray-800 font-semibold text-sm">
               {currentAuthor[0]?.name}
             </span>
-            <span className="text-gray-500 ml-2 text-sm">
+            <span className="text-gray-500 ml-2 text-xs md:text-sm">
               {<TimeAgo date={createdAt} />}
             </span>
           </div>
-          <p className="text-xs text-gray-800">
+          <div className="block md:hidden">
+            <span className="text-gray-800 font-semibold text-sm">
+              {currentAuthor[0]?.name}
+            </span>
+            <div className="-mt-2">
+              <span className="text-xs text-gray-800">
+                {currentAuthor[0]?.isAdmin
+                  ? "Admin"
+                  : currentAuthor[0]?.isMember
+                  ? "Premium Member"
+                  : "New User"}
+              </span>
+              <span className="text-gray-500 ml-2 text-xs md:text-sm">
+                {<TimeAgo date={createdAt} />}
+              </span>
+            </div>
+          </div>
+          <p className="hidden md:block text-xs text-gray-800">
             {currentAuthor[0]?.isAdmin
               ? "Admin"
               : currentAuthor[0]?.isMember

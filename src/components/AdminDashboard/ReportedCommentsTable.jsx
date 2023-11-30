@@ -17,7 +17,9 @@ const ReportedCommentsTable = ({ reports, refetch }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/posts/${id}`)
+          .delete(`http://localhost:5000/posts/${id}`, {
+            withCredentials: true,
+          })
           .then((res) => {
             console.log(res);
             refetch();
@@ -40,7 +42,7 @@ const ReportedCommentsTable = ({ reports, refetch }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto text-xs md:text-base">
       <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr>

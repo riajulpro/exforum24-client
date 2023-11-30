@@ -11,7 +11,7 @@ const UserDashboard = () => {
   return (
     <div className="h-screen">
       <div className="grid grid-cols-12">
-        <div className="h-screen col-span-2 bg-white shadow sticky top-0">
+        <div className="md:h-screen col-span-12 md:col-span-2 bg-white shadow sticky top-0">
           <div className="p-5 border-b text-center">
             <Link to={"/"} className="hover:text-violet-400">
               <h4 className="text-2xl font-semibold">ExForum24</h4>
@@ -20,7 +20,7 @@ const UserDashboard = () => {
               </h6>
             </Link>
           </div>
-          <div className="nav-links flex flex-col">
+          <div className="nav-links flex flex-row flex-wrap justify-center text-xs md:flex-col md:justify-start md:text-base">
             <Link
               to={"/admin-dashboard"}
               className={`${isActiveLink("/admin-dashboard") && "active"}`}
@@ -36,7 +36,7 @@ const UserDashboard = () => {
             </NavLink>
           </div>
         </div>
-        <div className="col-span-10">
+        <div className="col-span-12 md:col-span-10">
           <Outlet />
         </div>
       </div>

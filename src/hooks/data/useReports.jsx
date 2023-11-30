@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const useReports = () => {
+const useReports = (currentPage) => {
   const {
     isPending,
     isLoading,
@@ -11,10 +11,13 @@ const useReports = () => {
   } = useQuery({
     queryKey: ["reportsData"],
     queryFn: async () => {
-      const data = await axios.get("http://localhost:5000/reports", {
-        withCredentials: true,
-      });
-      return await data.data.data;
+      const data = await axios.get(
+        `http://localhost:5000/reports?page=${currentPage + 1}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return await data.data;
     },
   });
 

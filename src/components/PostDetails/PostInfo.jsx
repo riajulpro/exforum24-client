@@ -40,7 +40,9 @@ const PostInfo = ({ post, refetch }) => {
       });
     } else {
       axios
-        .put(`http://localhost:5000/posts/${_id}`, voteBody)
+        .put(`http://localhost:5000/posts/${_id}`, voteBody, {
+          withCredentials: true,
+        })
         .then(() => {
           console.log("Your vote has been added to upVotes");
           refetch();
@@ -133,15 +135,32 @@ const PostInfo = ({ post, refetch }) => {
           className="w-7 h-7 rounded-full mr-2"
         />
         <div>
-          <div className="flex items-center">
+          <div className="hidden md:flex flex-row items-center">
             <span className="text-gray-800 font-semibold text-sm">
               {currentAuthor[0]?.name}
             </span>
-            <span className="text-gray-500 ml-2 text-sm">
+            <span className="text-gray-500 ml-2 text-xs md:text-sm">
               {<TimeAgo date={createdAt} />}
             </span>
           </div>
-          <p className="text-xs text-gray-800">
+          <div className="block md:hidden">
+            <span className="text-gray-800 font-semibold text-sm">
+              {currentAuthor[0]?.name}
+            </span>
+            <div className="-mt-2">
+              <span className="text-xs text-gray-800">
+                {currentAuthor[0]?.isAdmin
+                  ? "Admin"
+                  : currentAuthor[0]?.isMember
+                  ? "Premium Member"
+                  : "New User"}
+              </span>
+              <span className="text-gray-500 ml-2 text-xs md:text-sm">
+                {<TimeAgo date={createdAt} />}
+              </span>
+            </div>
+          </div>
+          <p className="hidden md:block text-xs text-gray-800">
             {currentAuthor[0]?.isAdmin
               ? "Admin"
               : currentAuthor[0]?.isMember
