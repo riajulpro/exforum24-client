@@ -13,7 +13,7 @@ const ManageUsers = () => {
     return "Loading...";
   }
 
-  const pages = [...Array(usersForAdmin.totalPages).keys()];
+  const pages = [...Array(usersForAdmin?.totalPages).keys()];
 
   const showUser = usersForAdmin?.data || [];
 

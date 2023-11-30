@@ -11,7 +11,7 @@ const ReportedFrame = () => {
     return "Loading...";
   }
 
-  const pages = [...Array(reports.totalPages).keys()];
+  const pages = [...Array(reports?.totalPages).keys()];
 
   const showReports = reports?.data || [];
 

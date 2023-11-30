@@ -27,7 +27,7 @@ const PostTableFrame = ({ userId }) => {
     return "Loading...";
   }
 
-  const pages = [...Array(myPosts.totalPages).keys()];
+  const pages = [...Array(myPosts?.totalPages).keys()];
 
   const showPosts = myPosts?.data || [];
 

@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/Authentication";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import axios, { Axios } from "axios";
+import { Helmet } from "react-helmet";
 
 const Join = () => {
   const navigateTo = useNavigate();
@@ -104,6 +105,9 @@ const Join = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Join Us</title>
+      </Helmet>
       <div className="md:h-screen flex md:justify-center items-center">
         <div className="w-11/12 my-5 md:m-0 mx-auto md:2/3 lg:w-1/2 md:h-auto lg:h-auto flex flex-col-reverse md:flex-row rounded-md shadow-md overflow-hidden">
           {/* left */}

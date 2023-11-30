@@ -4,6 +4,7 @@ import { AiFillGithub, AiFillGoogleCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/Authentication";
 import { useForm } from "react-hook-form";
+import { Helmet } from "react-helmet";
 // import axios from "axios";
 
 const Login = () => {
@@ -63,6 +64,9 @@ const Login = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Login Now</title>
+      </Helmet>
       <div className="md:h-screen flex md:justify-center items-center bg-gray-400">
         <div className="w-11/12 my-5 md:m-0 mx-auto md:w-2/3 lg:w-1/2 md:h-auto lg:h-2/3 flex flex-col-reverse md:flex-row rounded-md shadow-md overflow-hidden">
           {/* left */}

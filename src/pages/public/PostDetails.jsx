@@ -8,6 +8,7 @@ import axios from "axios";
 import CommentSectionDemo from "../../components/PostDetails/CommentSectionDemo";
 import { useContext } from "react";
 import { AuthContext } from "../../context/Authentication";
+import { Helmet } from "react-helmet";
 
 const PostDetails = () => {
   const { id: pageId } = useParams();
@@ -30,26 +31,35 @@ const PostDetails = () => {
   );
 
   return (
-    <div className="w-11/12 md:w-9/12 mx-auto grid grid-cols-12 gap-3 mt-1 md:my-5">
-      <div className="col-span-12 md:col-span-2"></div>
-      <div className="col-span-12 md:col-span-7">
-        <div>
-          {singlePost.map((current) => (
-            <PostInfo key={current._id} post={current} refetch={postRefetch} />
-          ))}
+    <>
+      <Helmet>
+        <title>Post Details</title>
+      </Helmet>
+      <div className="w-11/12 md:w-9/12 mx-auto grid grid-cols-12 gap-3 mt-1 md:my-5">
+        <div className="col-span-12 md:col-span-2"></div>
+        <div className="col-span-12 md:col-span-7">
+          <div>
+            {singlePost.map((current) => (
+              <PostInfo
+                key={current._id}
+                post={current}
+                refetch={postRefetch}
+              />
+            ))}
+          </div>
+          <div>
+            <CreateComment postId={pageId} refetchHandle={refetch} />
+            {!user && <CommentSectionDemo />}
+          </div>
+          <div>
+            {currentComment?.map((comment) => (
+              <Comments key={comment._id} refetch={refetch} comment={comment} />
+            ))}
+          </div>
         </div>
-        <div>
-          <CreateComment postId={pageId} refetchHandle={refetch} />
-          {!user && <CommentSectionDemo />}
-        </div>
-        <div>
-          {currentComment?.map((comment) => (
-            <Comments key={comment._id} refetch={refetch} comment={comment} />
-          ))}
-        </div>
+        <div className="col-span-12 md:col-span-3"></div>
       </div>
-      <div className="col-span-12 md:col-span-3"></div>
-    </div>
+    </>
   );
 };
 
