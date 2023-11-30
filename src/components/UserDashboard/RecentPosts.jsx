@@ -8,7 +8,8 @@ const RecentPosts = ({ userId }) => {
     queryKey: ["myOwnPostsToShow", userId],
     queryFn: async () => {
       const res = await axios.get(
-        `https://exforum24.vercel.app/posts/mine/${userId}`
+        `https://exforum24.vercel.app/posts/mine/${userId}`,
+        { withCredentials: true }
       );
       return res.data.data;
     },
