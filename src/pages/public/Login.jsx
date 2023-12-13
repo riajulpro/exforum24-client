@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../context/Authentication";
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet";
-// import axios from "axios";
+import axios from "axios";
 
 const Login = () => {
   const navigateTo = useNavigate();
@@ -38,7 +38,10 @@ const Login = () => {
             );
             navigateTo("/");
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            navigateTo("/");
+          });
       })
       .catch((error) => {
         console.log(error.message);
@@ -55,7 +58,7 @@ const Login = () => {
           "Now you can access all features.",
           "success"
         );
-        navigateTo(location?.state ? location.state : "/");
+        navigateTo("/");
       })
       .catch(() => {
         setLoginError("Invalid email or password");
