@@ -87,7 +87,11 @@ const Home = () => {
             <div className="bg-white mb-2 rounded-sm cursor-pointer">
               <div className="flex gap-1 items-center p-3">
                 <img
-                  src={user?.photoURL}
+                  src={
+                    user
+                      ? user?.photoURL
+                      : "https://th.bing.com/th/id/OIP.ymEUbl8s2t2yzvdNqwOCyAHaHa?rs=1&pid=ImgDetMain"
+                  }
                   alt=""
                   className="w-7 h-7 rounded-full"
                 />
