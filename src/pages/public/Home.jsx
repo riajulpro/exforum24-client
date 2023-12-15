@@ -83,6 +83,31 @@ const Home = () => {
           </div>
         </div>
         <div className="col-span-12 md:col-span-7 md:mb-4">
+          <Link to="/user-dashboard/add-post">
+            <div className="bg-white mb-2 rounded-sm cursor-pointer">
+              <div className="flex gap-1 items-center p-3">
+                <img
+                  src={user?.photoURL}
+                  alt=""
+                  className="w-7 h-7 rounded-full"
+                />
+                <span className="w-full rounded-full bg-action p-1 text-sm text-gray-600">
+                  Share your thoughts...
+                </span>
+              </div>
+              <div className="flex justify-center items-center text-sm">
+                <div className="flex-1 w-full text-center border-r border-t hover:text-blue-600">
+                  Posts
+                </div>
+                <div className="flex-1 w-full text-center border-r border-t hover:text-blue-600">
+                  Add Photos
+                </div>
+                <div className="flex-1 w-full text-center border-t hover:text-blue-600">
+                  Feelings
+                </div>
+              </div>
+            </div>
+          </Link>
           {searchResult.length > 0 ? (
             <SearchResult refresh={setSearchResult} result={searchResult} />
           ) : (

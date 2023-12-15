@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 const Edit = () => {
   const { data: editedPost } = useLoaderData();
-  const { _id, title, content } = editedPost[0];
+  const { _id, title, content, thumbnail } = editedPost[0];
 
   const navigate = useNavigate();
 
@@ -14,6 +14,7 @@ const Edit = () => {
     defaultValues: {
       title: title,
       content: content,
+      thumbnail: thumbnail,
     },
   });
 
@@ -63,6 +64,16 @@ const Edit = () => {
                 rows="10"
                 id="title"
               ></textarea>
+            </label>
+
+            <label htmlFor="title" className="text-gray-800">
+              Thumbnail:
+              <input
+                {...register("thumbnail")}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
+                placeholder="Title"
+                id="title"
+              />
             </label>
 
             <input
