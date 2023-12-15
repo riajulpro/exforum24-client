@@ -17,8 +17,19 @@ const Posts = ({ post, refetch }) => {
 
   const { user } = useContext(AuthContext);
 
-  const { _id, author, title, content, tags, upVotes, downVotes, createdAt } =
-    post;
+  const {
+    _id,
+    author,
+    title,
+    content,
+    tags,
+    upVotes,
+    downVotes,
+    createdAt,
+    thumbnail,
+  } = post;
+
+  console.log(thumbnail);
 
   const { users = [] } = useUsers();
   const currentAuthor = users?.filter((user) => user._id === author);
@@ -120,7 +131,6 @@ const Posts = ({ post, refetch }) => {
       } else {
         // Fallback for browsers that do not support the share API
         console.log("Web Share API not supported.");
-        // You can provide a fallback share implementation here, like opening a new window with shareable link
       }
     } catch (error) {
       console.error("Error sharing the post:", error);
@@ -171,7 +181,16 @@ const Posts = ({ post, refetch }) => {
         </div>
       </div>
       <div>
-        <p className="font-semibold text-sm">{title}</p>
+        <p className="font-semibold text-lg">{title}</p>
+        {thumbnail && (
+          <div className="my-3">
+            <img
+              src={thumbnail}
+              alt="thumbnail"
+              className="h-56 w-full object-cover"
+            />
+          </div>
+        )}
         <p className="text-gray-800 text-sm">
           {content.slice(0, 300)}{" "}
           {content.length > 300 ? (

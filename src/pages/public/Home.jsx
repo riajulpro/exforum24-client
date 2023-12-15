@@ -7,6 +7,7 @@ import SearchResult from "../../components/Home/SearchResult";
 import { AuthContext } from "../../context/Authentication";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Latest from "../../components/Home/Latest";
 
 const Home = () => {
   const [searchResult, setSearchResult] = useState([]);
@@ -48,17 +49,7 @@ const Home = () => {
       </Helmet>
       <div className="grid grid-cols-12 gap-1 w-11/12 md:w-9/12 mx-auto md:gap-3 my-5">
         <div className="col-span-12 md:col-span-2 md:mb-4">
-          {user && (
-            <Link
-              to={"/user-dashboard/add-post"}
-              className="py-1 px-3 border bg-action border-gray-200 rounded cursor-pointer hover:bg-white text-sm text-center block md:inline-block"
-            >
-              +Create Post
-            </Link>
-          )}
-        </div>
-        <div className="col-span-12 md:col-span-7 md:mb-4">
-          <div className="mb-2 bg-white p-3 rounded-sm shadow">
+          <div>
             <form
               onSubmit={searchNow}
               className="flex justify-center items-center"
@@ -67,7 +58,7 @@ const Home = () => {
                 type="text"
                 name="searchItem"
                 placeholder="Enter any tags to find"
-                className="text-sm w-1/2 md:w-9/12 py-1 px-2 rounded-l-full border-gray-200 border"
+                className="text-sm w-2/3 md:w-9/12 py-1 px-2 rounded-l-full border-gray-200 border"
               />
               <input
                 type="submit"
@@ -75,21 +66,23 @@ const Home = () => {
                 className="bg-blue-400 border border-blue-gray-400 text-white hover:bg-blue-500 py-1 px-2 rounded-r-full text-sm cursor-pointer"
               />
             </form>
-            <div className="mt-2 text-xs">
-              <p className="text-center my-2">Search with these:</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {tags.map((tag, idx) => (
-                  <button
-                    key={idx}
-                    className="text-blue-400 hover:text-blue-500 bg-action p-1 rounded"
-                    onClick={() => searchByTags(tag)}
-                  >
-                    #{tag}
-                  </button>
-                ))}
-              </div>
+          </div>
+          <div className="mt-2 text-xs">
+            <p className="text-center my-2">Search by tags:</p>
+            <div className="flex justify-center flex-row md:flex-col flex-wrap md:flex-nowrap gap-1">
+              {tags.map((tag, idx) => (
+                <button
+                  key={idx}
+                  className="inline-block md:block text-blue-400 hover:text-blue-500 bg-white p-1 rounded"
+                  onClick={() => searchByTags(tag)}
+                >
+                  #{tag}
+                </button>
+              ))}
             </div>
           </div>
+        </div>
+        <div className="col-span-12 md:col-span-7 md:mb-4">
           {searchResult.length > 0 ? (
             <SearchResult refresh={setSearchResult} result={searchResult} />
           ) : (
@@ -97,7 +90,7 @@ const Home = () => {
           )}
         </div>
         <div className="col-span-12 md:col-span-3">
-          <Announcement />
+          <Latest />
         </div>
       </div>
     </>

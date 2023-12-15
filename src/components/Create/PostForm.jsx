@@ -21,16 +21,11 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
     },
   });
 
-  console.log(isAdmin, isMember);
-
   const createdPost = myOwnPosts?.length;
-
   const { allTags = [] } = usePostTags();
 
-  console.log(allTags);
-
   const onSubmit = (data) => {
-    const { title, content, tags } = data;
+    const { title, content, tags, thumbnail } = data;
     const tagArray = tags.map((tag) => tag.value);
 
     const apiData = {
@@ -38,6 +33,7 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
       content,
       tags: tagArray,
       author: userId,
+      thumbnail,
     };
 
     // Condition
@@ -122,6 +118,19 @@ const PostForm = ({ userId, isAdmin, isMember }) => {
             {...register("content", { required: "This field is required" })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Content"
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="content"
+          >
+            Thumbnail
+          </label>
+          <input
+            {...register("thumbnail")}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="enter image url for thumbnail"
           />
         </div>
         <div className="mb-4">

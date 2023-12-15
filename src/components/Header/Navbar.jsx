@@ -12,6 +12,7 @@ import useAnnouncements from "../../hooks/data/useAnnouncements";
 import { AuthContext } from "../../context/Authentication";
 import Announcement from "../Home/Announcement";
 import useSingleUser from "../../hooks/data/useSingleUser";
+import axios from "axios";
 
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -75,10 +76,12 @@ const Navbar = () => {
     };
   }, []);
 
+  const [searchResult, setSearchResult] = useState([]);
+
   return (
     <nav className="bg-white text-secondary p-1 sticky top-0 z-10 shadow">
       <div className="md:w-9/12 mx-auto flex justify-between items-center">
-        <div className="text-sm md:text-xl font-bold">
+        <div className="text-xs md:text-xl font-bold">
           <Link to={"/"}>ExForum24</Link>
         </div>
         <ul className="flex space-x-1 items-center uppercase">
@@ -87,7 +90,7 @@ const Navbar = () => {
               to="/"
               className="flex items-center gap-1 hover:bg-action p-2 rounded duration-150 ease-in"
             >
-              <RiHome2Line className="w-6 h-6" />{" "}
+              <RiHome2Line className="w-4 md:w-6 h-4 md:h-6" />{" "}
               <span className="hidden md:inline">Home</span>
             </NavLink>
           </li>
@@ -96,7 +99,7 @@ const Navbar = () => {
               to="/membership"
               className="flex items-center gap-1 hover:bg-action p-2 rounded duration-150 ease-in"
             >
-              <RiVipCrownLine className="w-6 h-6" />
+              <RiVipCrownLine className="w-4 md:w-6 h-4 md:h-6" />
               <span className="hidden md:inline">Membership</span>
             </NavLink>
           </li>
@@ -106,12 +109,12 @@ const Navbar = () => {
               className="hover:bg-action p-2 rounded duration-150 ease-in"
             >
               {notificationCount > 0 ? (
-                <IoMdNotifications className="w-6 h-6" />
+                <IoMdNotifications className="w-4 md:w-6 h-4 md:h-6" />
               ) : (
-                <IoMdNotificationsOutline className="w-6 h-6" />
+                <IoMdNotificationsOutline className="w-4 md:w-6 h-4 md:h-6" />
               )}
               {notificationCount > 0 && (
-                <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full text-[10px] select-none">
+                <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full text-[5px] md:text-[10px] select-none">
                   {notificationCount}
                 </div>
               )}

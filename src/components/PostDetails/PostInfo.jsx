@@ -18,8 +18,17 @@ const PostInfo = ({ post, refetch }) => {
 
   const { user } = useContext(AuthContext);
 
-  const { _id, author, title, content, tags, upVotes, downVotes, createdAt } =
-    post;
+  const {
+    _id,
+    author,
+    title,
+    content,
+    tags,
+    upVotes,
+    downVotes,
+    createdAt,
+    thumbnail,
+  } = post;
 
   const { users = [] } = useUsers();
   const currentAuthor = users?.filter((user) => user._id === author);
@@ -172,7 +181,16 @@ const PostInfo = ({ post, refetch }) => {
         </div>
       </div>
       <div>
-        <p className="font-semibold text-sm">{title}</p>
+        <p className="font-semibold text-lg">{title}</p>
+        {thumbnail && (
+          <div className="my-3">
+            <img
+              src={thumbnail}
+              alt="thumbnail"
+              className="h-72 w-full object-cover"
+            />
+          </div>
+        )}
         <p className="text-gray-800 text-sm">{content}</p>
         <p className="mt-1">
           {tags?.map((tag, index) => (

@@ -33,8 +33,8 @@ const Chart = ({ data }) => {
   };
 
   return (
-    <div className="flex justify-center">
-      <PieChart width={500} height={200}>
+    <div className="flex justify-center items-center">
+      <PieChart className="dyd" width={500} height={200}>
         <Pie
           data={data}
           cx="50%"
@@ -49,7 +49,7 @@ const Chart = ({ data }) => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Legend />
+        <Legend className="flex justify-center items-center gap-1 flex-wrap" />
       </PieChart>
     </div>
   );

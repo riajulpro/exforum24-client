@@ -16,17 +16,23 @@ const PostSection = () => {
 
   const showPost = posts?.data || [];
 
-  console.log(sort);
+  const makeTheSort = (e) => {
+    e.preventDefault();
+
+    console.log(e.target.value);
+
+    setSort(e.target.value);
+  };
 
   return (
     <>
       <div className="flex justify-end">
-        <button
+        {/* <button
           onClick={() => setSort("popularity")}
-          className="bg-action py-1 px-3 m-1 rounded hover:bg-white"
+          className="bg-action py-1 px-3 m-1 rounded hover:bg-white text-xs"
         >
           Popular Post
-        </button>
+        </button> */}
       </div>
       <div>
         {showPost.map((post) => (
